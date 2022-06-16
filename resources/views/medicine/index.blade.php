@@ -1,5 +1,9 @@
 @extends('layout.apoteku')
 
+@section('title')
+    Medicines
+@endsection
+
 @section('content')
 <!-- Product -->
 <div class="bg0 m-t-23 p-b-140">
@@ -7,7 +11,7 @@
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-                    All Products
+                    All Category
                 </button>
 
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
@@ -20,13 +24,13 @@
 
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
                     Bag
-                </button>
+            </button>
 
                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
-                    Shoes
+                Shoes
                 </button>
 
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
+                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
                     Watches
                 </button>
             </div>
@@ -77,7 +81,7 @@
                                 </a>
                             </li>
 
-                            <li class="p-b-6">
+                             <li class="p-b-6">
                                 <a href="#" class="filter-link stext-106 trans-04">
                                     Average rating
                                 </a>
@@ -246,19 +250,21 @@
             </div>
         </div>
 
+        
         <div class="row">
+            @foreach($medicine as $m)
             <div class="col-sm-4 col-md-4 col-lg-3 p-b-35">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
+                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/medicines/'.$m->photo)}}">
                         <ul class="product__hover">
                             <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
                             <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
+                            <li><a href="#modalDetail" onclick="getDetailMedicine({{ $m->id }})" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
-                        <h6>Piqué Biker Jacket</h6>
-                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
+                        <h6>{{ $m->generic_name }} {{ $m->form }}</h6>
+                        <a href="{{ url('medicines/'.$m->id) }}" class="add-cart">{{ $m->generic_name }} {{ $m->form }}</a>
                         <div class="rating">
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
@@ -266,7 +272,7 @@
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                         </div>
-                        <h5>$67.24</h5>
+                        <h5>Rp{{ $m->price }},-</h5>
                         <div class="product__color__select">
                             <label for="pc-4">
                                 <input type="radio" id="pc-4">
@@ -281,41 +287,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 col-md-4 col-lg-3 p-b-35">
-                <div class="product__item sale">
-                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
-                        <span class="label">Sale</span>
-                        <ul class="product__hover">
-                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6>Multi-pocket Chest Bag</h6>
-                        <a href="#" class="add-cart">Multi-pocket Chest Bag</a>
-                        <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-o"></i>
-                        </div>
-                        <h5>$43.48</h5>
-                        <div class="product__color__select">
-                            <label for="pc-7">
-                                <input type="radio" id="pc-7">
-                            </label>
-                            <label class="active black" for="pc-8">
-                                <input type="radio" id="pc-8">
-                            </label>
-                            <label class="grey" for="pc-9">
-                                <input type="radio" id="pc-9">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
         <!-- Pagination -->
         <div class="flex-c-m flex-w w-full p-t-38">
@@ -329,4 +301,51 @@
         </div>
     </div>
 </div>
+
+<!-- Modal1 -->
+<div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="modalDetail">
+    <div class="overlay-modal1 js-hide-modal1"></div>
+    <div class="container">
+        <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+            <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                <img src="{{asset('assets/images/icons/icon-close.png')}}" alt="CLOSE">
+            </button>
+            <div class="row contentDetail">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@endsection
+
+@section('javascript')
+
+<script>
+    function getDetailMedicine(id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("medicines.getDetailMedicine") }}',
+            data: { '_token': '<?php echo csrf_token() ?>', 'id':id},
+            success: function(data){
+                $('.contentDetail').html(data.msg)
+            }
+        })
+    }
+
+</script>
+
+@endsection
+
+
+
+
+@section('header-class')
+header-v4 how-shadow1
+@endsection
+
+@section('medicine-active')
+active-menu
 @endsection

@@ -23,7 +23,7 @@ class CreateMedicinesTable extends Migration
             $table->boolean('faskes1')->default(0);
             $table->boolean('faskes2')->default(0);
             $table->boolean('faskes3')->default(0);
-            $table->string('photo');
+            $table->string('photo')->nullable();
         });
     }
 

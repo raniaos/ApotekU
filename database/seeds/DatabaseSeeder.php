@@ -12,7 +12,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
-        // $this->call(CategorySeeder::class);
-        // $this->call(MedicineSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(MedicineSeeder::class);
+        factory(App\User::class, 3)->create();
     }
 }

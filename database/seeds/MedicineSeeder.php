@@ -20,7 +20,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'asammefenamat250.jpg',
              'category_id'=>1
         ]);
 
@@ -33,7 +33,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'asammefenamat500.jpg',
              'category_id'=>1
         ]);
 
@@ -46,7 +46,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'ibuprofen200.jpeg',
              'category_id'=>1
         ]);
 
@@ -59,7 +59,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'ibuprofen400.jpg',
              'category_id'=>1
         ]);
 
@@ -72,7 +72,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'asammefenamat100.jpeg',
              'category_id'=>1
         ]);
 
@@ -85,7 +85,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'ketoprofen50.jpg',
              'category_id'=>1
         ]);
 
@@ -98,7 +98,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'ketoprofen100.jpg',
              'category_id'=>1
         ]);
 
@@ -112,7 +112,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'allopurinol100.jpg',
              'category_id'=>2
         ]);
 
@@ -125,12 +125,12 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'allopurinol300.jpeg',
              'category_id'=>2
         ]);
 
         DB::table('medicines')->insert(
-            ['gener{{ ic_n }}ame' => 'kolkisin',
+            ['generic_name' => 'kolkisin',
              'form' => 'tab 500 mcg',
              'restriction_formula' =>'30tab/bulan',
              'price' => 16500,
@@ -138,7 +138,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'kolkisin500.jpg',
              'category_id'=>2
         ]);
 
@@ -153,7 +153,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'bupivakain0.5.jpg',
              'category_id'=>3
         ]);
 
@@ -166,7 +166,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'lidokain0.5.jpg',
              'category_id'=>3
         ]);
 
@@ -179,7 +179,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'lidokain10.jpg',
              'category_id'=>3
         ]);
 
@@ -193,7 +193,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'propranolol10.jpg',
              'category_id'=>4
         ]);
 
@@ -213,7 +213,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'betahistin6.jpeg',
              'category_id'=>5
         ]);
 
@@ -229,7 +229,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'betahistin24.jpeg',
              'category_id'=>5
         ]);
 
@@ -243,7 +243,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'azatioprin50.png',
              'category_id'=>6
         ]);
 
@@ -259,7 +259,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'basiliksimab20.jpg',
              'category_id'=>6
         ]);
 
@@ -276,7 +276,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'everolimus0,25.jpg',
              'category_id'=>6
         ]);
 
@@ -293,7 +293,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'everolimus0,5.jpg',
              'category_id'=>6
         ]);
 
@@ -307,7 +307,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'hidroksiklorokuin200.jpeg',
              'category_id'=>6
         ]);
 
@@ -320,7 +320,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'klorokuin250.jpg',
              'category_id'=>6
         ]);
 
@@ -334,7 +334,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'mikofenolatsodium180.jpg',
              'category_id'=>6
         ]);
 
@@ -349,105 +349,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
-             'category_id'=>6
-        ]);
-
-        DB::table('medicines')->insert(
-            ['generic_name' => 'hidroksiklorokuin',
-             'form' => 'tab 200 mg',
-             'restriction_formula' =>'60 tab/bulan.',
-             'price' => 13300,
-             'description' =>'Untuk kasus SLE (Systemic
-             Lupus Erythematosus).',
-             'faskes1' => '0',
-             'faskes2' => '0',
-             'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'mikofenolatsodium360.jpg',
              'category_id'=>6
         ]);
 
@@ -461,7 +363,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Afatinib40.jpg',
              'category_id'=>7
         ]);
 
@@ -474,7 +376,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Bendamustin100.jpg',
              'category_id'=>7
         ]);
 
@@ -487,7 +389,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Bleomisin15.jpg',
              'category_id'=>7
         ]);
 
@@ -500,7 +402,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Dakarbazin100.jpg',
              'category_id'=>7
         ]);
 
@@ -513,7 +415,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Hidroksiurea500.jpg',
              'category_id'=>7
         ]);
 
@@ -526,7 +428,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Nilotinib150.jpg',
              'category_id'=>7
         ]);
 
@@ -540,7 +442,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Furosemid40.jpeg',
              'category_id'=>8
         ]);
 
@@ -553,7 +455,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Hidroklorotiazid12,5.jpg',
              'category_id'=>8
         ]);
 
@@ -567,7 +469,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Silodosin4.jpg',
              'category_id'=>9
         ]);
 
@@ -580,7 +482,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Tamsulosin0,2.jpg',
              'category_id'=>9
         ]);
 
@@ -593,7 +495,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Terazosin1.png',
              'category_id'=>9
         ]);
 
@@ -606,7 +508,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Doksazosin1.jpg',
              'category_id'=>9
         ]);
 
@@ -620,7 +522,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Desmopresin0,1.jpg',
              'category_id'=>10
         ]);
 
@@ -633,7 +535,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Desmopresin0,2.jpg',
              'category_id'=>10
         ]);
 
@@ -646,7 +548,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Desmopresin10.jpg',
              'category_id'=>10
         ]);
 
@@ -659,7 +561,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Vasopresin20.jpeg',
              'category_id'=>10
         ]);
 
@@ -673,7 +575,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Akarbose50.jpg',
              'category_id'=>11
         ]);
 
@@ -686,7 +588,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Akarbose100.jpg',
              'category_id'=>11
         ]);
 
@@ -699,7 +601,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Glikuidon30.jpg',
              'category_id'=>11
         ]);
 
@@ -712,7 +614,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Pioglitazon15.jpg',
              'category_id'=>11
         ]);
 
@@ -725,7 +627,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Pioglitazon30.jpg',
              'category_id'=>11
         ]);
 
@@ -738,7 +640,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Vildagliptin50.jpg',
              'category_id'=>11
         ]);
 
@@ -752,7 +654,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Alteplase15.jpg',
              'category_id'=>12
         ]);
 
@@ -765,7 +667,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'streptokinaseinj.jpg',
              'category_id'=>12
         ]);
 
@@ -779,7 +681,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'atorvastatin10.png',
              'category_id'=>13
         ]);
 
@@ -792,7 +694,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'atorvastatin20.png',
              'category_id'=>13
         ]);
 
@@ -805,13 +707,13 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'gemfibrozil300.jpg',
              'category_id'=>13
         ]);
 
         // Kategori 14
         DB::table('medicines')->insert(
-            ['generic_name' => 'Klotrimazol',
+            ['generic_name' => 'Clotrimazole',
              'form' => 'tab vaginal 100 mg',
              'restriction_formula' =>'',
              'price' => 99900,
@@ -819,12 +721,12 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'Clotrimazole100.png',
              'category_id'=>14
         ]);
 
         DB::table('medicines')->insert(
-            ['generic_name' => 'Mikonazol',
+            ['generic_name' => 'Mikonazole',
              'form' => 'Krim 2%',
              'restriction_formula' =>'',
              'price' => 103500,
@@ -832,7 +734,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'mikonazole2.jpg',
              'category_id'=>14
         ]);
 
@@ -846,12 +748,12 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'maprotilin50.jpg',
              'category_id'=>15
         ]);
 
         DB::table('medicines')->insert(
-            ['generic_name' => 'Sertralin',
+            ['generic_name' => 'Sertraline',
              'form' => 'tab sal selaput 50 mg',
              'restriction_formula' =>'30 tab/bulan',
              'price' => 103500,
@@ -859,7 +761,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => '',
+             'photo' => 'sertraline50.jpg',
              'category_id'=>15
         ]);
 

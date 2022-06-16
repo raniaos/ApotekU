@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class UserController extends Controller
 {
@@ -95,5 +96,10 @@ class UserController extends Controller
         Auth::attempt(['email' => $username, 'password' => $password]);
 
         return redirect()->route('/');
+    }
+
+    public function a()
+    {
+        dd(User::all());
     }
 }

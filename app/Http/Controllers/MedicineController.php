@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Medicine;
 use Illuminate\Http\Request;
+use DB;
+use App\Category;
 
 class MedicineController extends Controller
 {
@@ -14,7 +16,16 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        return view("medicine.index");
+        $category = Category::all();
+        $medicine = Medicine::all();
+        // dd($data);
+        return view("medicine.index", compact("medicine", "category"));
+    }
+
+    public function admin(){
+        $category = Category::all();
+        $medicine = Medicine::all();
+        return view("medicineadmin.index", compact("medicine", "category"));
     }
 
     /**
@@ -24,7 +35,8 @@ class MedicineController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view("medicineadmin.create", compact('categories'));
     }
 
     /**
@@ -35,7 +47,20 @@ class MedicineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Medicine();
+        $data->generic_name = $request->get('generic_name');
+        $data->form = $request->get('form');
+        $data->restriction_formula = $request->get('restriction_formula');
+        $data->price = $request->get('price');
+        $data->description = $request->get('description');
+        $data->faskes1 = $request->get('faskes1') == 'on' ? 1 : 0;
+        $data->faskes2 = $request->get('faskes2') == 'on' ? 1 : 0;
+        $data->faskes3 = $request->get('faskes3') == 'on' ? 1 : 0;
+        $data->category_id = $request->get('category_id');
+        $data->save();
+
+        return redirect('medadmin')
+            ->with('status','Medicine has been created');
     }
 
     /**
@@ -46,7 +71,13 @@ class MedicineController extends Controller
      */
     public function show(Medicine $medicine)
     {
-        //
+        $res=$medicine;
+        $id = $medicine->category_id;
+        $obatSerupa=DB::table('medicines')
+            ->where("category_id","=",$id)
+            ->get();
+        
+        return view("medicine.detail", compact('res','obatSerupa'));
     }
 
     /**
@@ -57,19 +88,32 @@ class MedicineController extends Controller
      */
     public function edit(Medicine $medicine)
     {
-        //
+        $med = $medicine;
+        $categories = Category::all();
+        return view('medicineadmin.edit', compact('med', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Medicine  $medicine
+     * @param  \A{{ pp\Medicine  $medicin }}e
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Medicine $medicine)
     {
-        //
+        $medicine->generic_name = $request->get('generic_name');
+        $medicine->form = $request->get('form');
+        $medicine->restriction_formula = $request->get('restriction_formula');
+        $medicine->price = $request->get('price');
+        $medicine->description = $request->get('description');
+        $medicine->faskes1 = $request->get('faskes1') == 'on' ? 1 : 0;
+        $medicine->faskes2 = $request->get('faskes2') == 'on' ? 1 : 0;
+        $medicine->faskes3 = $request->get('faskes3') == 'on' ? 1 : 0;
+        $medicine->category_id = $request->get('category_id');
+        $medicine->save();
+        
+        return redirect('medadmin')->with('status', 'Medicine has been updated');
     }
 
     /**
@@ -80,6 +124,54 @@ class MedicineController extends Controller
      */
     public function destroy(Medicine $medicine)
     {
-        //
+        try {
+            $medicine->delete();
+
+            return redirect('medadmin')->with('status', 'Successfully deleted the medicine');
+        } catch(\PDOException $e) {
+            $msg = "Failed to delete medicine. Please make sure to delete other data that connected with this medicine.";
+
+            return redirect()->route('medicines.index')->with('error', $msg);
+        }
+    }
+
+    public function ObatTerlaris() 
+    {
+        //select m.*, sum(quantity) as qty from medicine_transaction mt inner join medicines m on mt.medicine_id = m.id group by medicine_id order by qty desc
+        $data = DB::table('medicines as m')->join('medicine_transaction as mt', 'm.id', '=', 'mt.medicine_id')->select('mt.medicine_id', DB::raw('sum(quantity) as qty'))->orderBy('qty', 'DESC')->groupBy('mt.medicine_id')->get();
+
+        dd($data);
+    }
+
+    public function getDetail(Request $request) {
+        $id = $request->get('id');
+        $data = Medicine::find($id);
+        $category = Category::all();
+        return response() -> json(array(
+            'status' => 'ok',
+            'msg' => view('medicine.getDetail', compact('data', 'category'))->render()
+        ), 200);
+    }
+
+    public function addToCart(Request $request)
+    {
+        $id = $request->get('idmedicine');
+        $qty = $request->get('num-product');
+        dd($id);
+        $p=Medicine::find($id);
+        $cart=session()->get('cart');
+        if(!isset($cart[$id])){
+            $cart[$id]=[
+                "name"=>$p->generic_name . " (". $p->form .")",
+                "quantity"=>1,
+                "price"=>$p->price,
+                "photo"=>$p->photo
+            ];
+        }
+        else{
+            $cart[$id]['quantity']++;
+        }
+        session()->put('cart',$cart);
+        return redirect()->back()->with('success', 'Product ' . $cart[$id]['name'] . " jumlah " . $cart[$id]['quantity']);
     }
 }
