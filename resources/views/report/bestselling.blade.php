@@ -40,20 +40,20 @@
                     <th class="column-5" style="text-align:center;">Total Sold</th>
                 </tr>
 
-                @foreach($medicine as $m)
+                @foreach($result as $m)
                 <tr class="table_row">
                     <td class="column-1">
                         <div class="how-itemcart1">
-                            <img src="{{asset('assets/images/medicines/'.$m->photo)}}" alt="IMG">
+                            <img src="{{asset('assets/images/medicines/'.$m['medicines']->photo)}}" alt="IMG">
                         </div>
                     </td>
-                    <td class="column-2">{{ $m->generic_name }}<br>{{ $m->form }}<br>{{ $m->Category->name }}</td>
-                    <td class="column-3">Rp{{ number_format($m->price,0,',','.') }},-</td>
-                    <td class="column-3">{{ $m->restriction_formula }}</td>
-                    <td class="column-2 p-t-20">{{ $m->description }}</td>
+                    <td class="column-2">{{ $m['medicines']->generic_name }}<br>{{ $m['medicines']->form }}</td>
+                    <td class="column-3">Rp{{ number_format($m['medicines']->price,0,',','.') }},-</td>
+                    <td class="column-3">{{ $m['medicines']->restriction_formula }}</td>
+                    <td class="column-2 p-t-20">{{ $m['medicines']->description }}</td>
                     <td class="column-6">
                         <div style="text-align:center;" class="icon-header-item cl2 hov-cl1 trans-04 p-l-11 p-r-11">
-                            @if($m->faskes1)
+                            @if($m['medicines']->faskes1)
                                 <i class="zmdi zmdi-check-circle"></i>
                             @else
                                 <i class="zmdi zmdi-minus-circle"></i>
@@ -62,7 +62,7 @@
                     </td>
                     <td class="column-7">
                         <div style="text-align:center;" class="icon-header-item cl2 hov-cl1 trans-04 p-l-11 p-r-11">
-                            @if($m->faskes2)
+                            @if($m['medicines']->faskes2)
                                 <i class="zmdi zmdi-check-circle"></i>
                             @else
                                 <i class="zmdi zmdi-minus-circle"></i>
@@ -71,7 +71,7 @@
                     </td>
                     <td class="column-8">
                         <div style="text-align:center;" class="icon-header-item cl2 hov-cl1 trans-04 p-l-11 p-r-11">
-                            @if($m->faskes3)
+                            @if($m['medicines']->faskes3)
                                 <i class="zmdi zmdi-check-circle"></i>
                             @else
                                 <i class="zmdi zmdi-minus-circle"></i>
@@ -79,7 +79,7 @@
                         </div>
                     </td>
                     <td class="column-5">
-                        Jumlah Terjual
+                        {{ $m['quantity'] }}
                     </td>
                 </tr>
                 @endforeach

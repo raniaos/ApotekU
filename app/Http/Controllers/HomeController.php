@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class HomeController extends Controller
 {
@@ -23,7 +24,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view("home.index");
+        $bestSelling = DB::table('medicines as m')
+            ->join('medicine_transaction as mt', 'm.id', '=', 'mt.medicine_id')
+            ->select('mt.medicine_id as id', DB::raw('sum(quantity) as qty'))
+            ->orderBy('qty', 'DESC')
+            ->groupBy('mt.medicine_id')
+            ->limit(10)
+            ->get();
+            $bestSeller = array();
+        
+            foreach ($bestSelling as $m) {
+                $id = $m->id;
+                $medicine = DB::table('medicines')
+                    ->find($id);
+                array_push($bestSeller,$medicine);
+            }
+        return view("home.index",compact('bestSeller'));
     }
 
     /**

@@ -63,7 +63,7 @@ class MedicineController extends Controller
             ->with('status','Medicine has been created');
     }
 
-    /**
+    /**{{  }}
      * Display the specified resource.
      *
      * @param  \App\Medicine  $medicine
@@ -161,10 +161,13 @@ class MedicineController extends Controller
         $cart=session()->get('cart');
         if(!isset($cart[$id])){
             $cart[$id]=[
-                "name"=>$p->generic_name . " (". $p->form .")",
+                "id"=>$id,
+                "name"=>$p->generic_name,
+                "form"=>$p->form,
                 "quantity"=>$qty,
                 "price"=>$p->price,
-                "photo"=>$p->photo
+                "photo"=>$p->photo,
+                "category"=>$p->category->name
             ];
         }
         else{
@@ -179,22 +182,61 @@ class MedicineController extends Controller
         ), 200);
     }
 
+    public function updateCart(Request $request) {
+        $cart=session()->get('cart');
+        $i = 0;
+        $temp = array();
+        foreach($cart as $c=>$detail) {
+            $qty = $request->get('num_'.$i);
+            if ($qty != 0) {
+                $temp[$c] = [
+                    "id"=>$c,
+                    "name"=>$detail['name'],
+                    "form"=>$detail['form'],
+                    "quantity"=>$qty,
+                    "price"=>$detail['price'],
+                    "photo"=>$detail['photo'],
+                    "category"=>$detail['category']
+                ];
+            }
+            $i++;
+        }
+        session()->put('cart',$temp);
+        session()->put('totalCart', count($temp));
+        return redirect()->back();
+    }
+    
+
     public function cekcart(){
         $cart=session()->get('cart');
         // $jum = count($cart);
+        $cart = session('totalCart');
         dd($cart);
     }
 
     public function bestSelling(){
-        $medicine = DB::table('medicines as m')
+        $bestSelling = DB::table('medicines as m')
             ->join('medicine_transaction as mt', 'm.id', '=', 'mt.medicine_id')
-            ->select('mt.medicine_id', DB::raw('sum(quantity) as qty'))
+            ->select('mt.medicine_id as id', DB::raw('sum(quantity) as qty'))
             ->orderBy('qty', 'DESC')
             ->groupBy('mt.medicine_id')
             ->limit(5)
             ->get();
-
-        return view("report.bestselling", compact('medicine'));
+            $result = array();
+            
+            for ($i=0; $i < 5 ; $i++) { 
+                $id = $bestSelling[$i]->id;
+                $medicine = DB::table('medicines')
+                    ->find($id);
+                $result[$i] = array('quantity' => $bestSelling[$i]->qty, 'medicines' => $medicine);
+            }
+            // foreach ($bestSelling as $m) {
+            //     $id = $m->id;
+            //     $medicine = DB::table('medicines')
+            //         ->find($id);
+            //     // array_push($medicines,$medicine);
+            // }
+        return view("report.bestselling", compact('result'));
     }
 
     public function cart() {

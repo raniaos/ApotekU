@@ -17,6 +17,8 @@ Route::get('/', 'HomeController@index');
 Route::get('cart', 'MedicineController@cart');
 Route::resource('medicines', 'MedicineController');
 Route::resource('categories', 'CategoryController');
+Route::resource('transactions', 'TransactionController');
+Route::resource('address', 'AddressController');
 Route::resource('users', 'UserController');
 
 Route::middleware(['auth'])->group(function() {
@@ -27,6 +29,7 @@ Route::middleware(['auth'])->group(function() {
 Auth::routes();
 Route::post('/medicines/getDetailMedicine', 'MedicineController@getDetail')->name('medicines.getDetailMedicine');
 Route::post('/addToCart', 'MedicineController@addToCart')->name('medicines.addToCart');
+Route::post('/medicines/updateCart', 'MedicineController@updateCart')->name('medicines.updateCart');
 Route::get('/cekcart', 'MedicineController@cekcart');
 
 //jgn dihapus lg coba"

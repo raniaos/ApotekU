@@ -21,7 +21,8 @@
     
 
 <!-- Shoping Cart -->
-<form class="bg0 p-t-75 p-b-85">
+<form class="bg0 p-t-75 p-b-85" method="POST" action="{{ url('medicines/updateCart') }}">
+    @csrf
     <div class="container">
         <div class="row">
             <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -33,56 +34,42 @@
                                 <th class="column-2"></th>
                                 <th class="column-3">Price</th>
                                 <th class="column-4">Quantity</th>
-                                <th class="column-5">Total</th>
+                                <th class="column-5">Subtotal</th>
                             </tr>
 
+                            <?php $total = 0; $i = 0; ?>
+                            @if(session('cart'))
+                            
+                            @foreach(session('cart') as $id=>$m)
+                            <input type="hidden" name="id_{{ $i }}" value="{{ $id }}">
                             <tr class="table_row">
                                 <td class="column-1">
                                     <div class="how-itemcart1">
-                                        <img src="images/item-cart-04.jpg" alt="IMG">
+                                        <img src="{{asset('assets/images/medicines/'.$m['photo'])}}" alt="IMG">
                                     </div>
                                 </td>
-                                <td class="column-2">Fresh Strawberries</td>
-                                <td class="column-3">$ 36.00</td>
+                                <td class="column-2"><strong>{{ $m['name'] }}</strong><br>{{ $m['form'] }}<br>{{ $m['category'] }}</td>
+                                <td class="column-3">Rp{{ number_format($m['price'],0,',','.') }},-</td>
                                 <td class="column-4">
                                     <div class="wrap-num-product flex-w m-l-auto m-r-0">
                                         <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                                             <i class="fs-16 zmdi zmdi-minus"></i>
                                         </div>
 
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
+                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num_{{ $i }}" value="{{ $m['quantity'] }}">
 
                                         <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                             <i class="fs-16 zmdi zmdi-plus"></i>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="column-5">$ 36.00</td>
+                                <?php $subtotal = $m['quantity']*$m['price']; $i++; ?>
+                                <td class="column-5">Rp{{ number_format($subtotal,0,',','.') }},-</td>
+                                <?php $total+=$subtotal ?>
                             </tr>
+                            @endforeach
+                            @endif
 
-                            <tr class="table_row">
-                                <td class="column-1">
-                                    <div class="how-itemcart1">
-                                        <img src="images/item-cart-05.jpg" alt="IMG">
-                                    </div>
-                                </td>
-                                <td class="column-2">Lightweight Jacket</td>
-                                <td class="column-3">$ 16.00</td>
-                                <td class="column-4">
-                                    <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                            <i class="fs-16 zmdi zmdi-minus"></i>
-                                        </div>
-
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
-
-                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                            <i class="fs-16 zmdi zmdi-plus"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="column-5">$ 16.00</td>
-                            </tr>
                         </table>
                     </div>
 
@@ -96,7 +83,7 @@
                         </div>
 
                         <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                            Update Cart
+                            <button type="submit">Update Cart</button>
                         </div>
                     </div>
                 </div>
@@ -111,17 +98,18 @@
                     <div class="flex-w flex-t bor12 p-b-13">
                         <div class="size-208">
                             <span class="stext-110 cl2">
-                                Subtotal:
+                                Total:
                             </span>
                         </div>
 
                         <div class="size-209">
                             <span class="mtext-110 cl2">
-                                $79.65
+                                Rp{{ number_format($total,0,',','.') }},-
                             </span>
                         </div>
                     </div>
-
+                
+                    <!-- shipping -->
                     <div class="flex-w flex-t bor12 p-t-15 p-b-30">
                         <div class="size-208 w-full-ssm">
                             <span class="stext-110 cl2">
@@ -188,6 +176,25 @@
         </div>
     </div>
 </form>
+@endsection
+
+@section('javascript-extra')
+
+<script>
+    function getDetailMedicine(id) {
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("medicines.getDetailMedicine") }}',
+            data: { '_token': '<?php echo csrf_token() ?>', 'id':id},
+            success: function(data){
+                $('.contentDetail').html(data.msg)
+            }
+        })
+    }
+
+
+</script>
+
 @endsection
 
 @section('header-class')

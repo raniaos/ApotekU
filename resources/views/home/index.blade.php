@@ -186,18 +186,19 @@
                     <!-- Slide2 -->
                     <div class="wrap-slick2">
                         <div class="slick2">
+                            @foreach($bestSeller as $m)
                             <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
+                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/medicines/'.$m->photo)}}">
                                         <ul class="product__hover">
                                             <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
                                             <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
+                                            <li><a href="#modalDetail" onclick="getDetailMedicine({{ $m->id }})" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
+                                        <h6>{{ $m->generic_name }} {{ $m->form }}</h6>
+                                        <a href="{{ url('medicines/'.$m->id) }}" class="add-cart">{{ $m->generic_name }} {{ $m->form }}</a>
                                         <div class="rating">
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
@@ -205,7 +206,7 @@
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
                                         </div>
-                                        <h5>$67.24</h5>
+                                        <h5>Rp{{ number_format($m->price,0,',','.') }},-</h5>
                                         <div class="product__color__select">
                                             <label for="pc-4">
                                                 <input type="radio" id="pc-4">
@@ -220,176 +221,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>$67.24</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>$67.24</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>$67.24</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>$67.24</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/product-02.jpg')}}">
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
-                                            <li><a href="#" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">Piqué Biker Jacket</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <h5>$67.24</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
