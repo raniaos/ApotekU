@@ -136,7 +136,8 @@
 										<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
 											<i class="zmdi zmdi-account-circle"></i>
 										</a>
-									@else
+									@endguest
+									@auth
 										<i class="zmdi zmdi-account-circle"></i>
 										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
 											<li><a href="#">Edit Account</a></li>
@@ -146,7 +147,7 @@
 												@csrf
 											</form>
 										</ul>
-									@endguest
+									@endauth
 								</li>
 							</ul>
 						</div>

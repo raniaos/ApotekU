@@ -13,18 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@index')->middleware('guest');
+Route::get('/', 'HomeController@index');
 Route::resource('medicines', 'MedicineController');
 Route::resource('categories', 'CategoryController');
-Route::get('/medadmin', 'MedicineController@admin');
-Route::get('/a', 'UserController@a');
-Route::post('/medicines/getDetailMedicine', 'MedicineController@getDetail')->name('medicines.getDetailMedicine');
-Route::get('addToCart', 'MedicineController@addToCart');
-
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index');
     
+    Route::get('/medicines/admin', 'MedicineController@admin');
+    Route::post('/medicines/getDetailMedicine', 'MedicineController@getDetail')->name('medicines.getDetailMedicine');
+    Route::get('/addToCart', 'MedicineController@addToCart');
 });
 Auth::routes();
 
