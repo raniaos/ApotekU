@@ -1,7 +1,11 @@
-@extends('layouts.app')
+@extends('layout.apoteku')
+
+@section('title')
+    Login
+@endsection
 
 @section('content')
-<div class="container">
+<div class="container" style="padding: 100px 0">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -40,11 +44,11 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
+                            <div class="col-md-6 offset-md-4" style="margin-left: 33.33333333%">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" style="left: 20px" {{ old('remember') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label" for="remember" style="padding-left: 1.75rem">
                                         {{ __('Remember Me') }}
                                     </label>
                                 </div>
@@ -52,7 +56,7 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
+                            <div class="col-md-8 offset-md-4" style="margin-left: 33.33333333%">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>

@@ -22,13 +22,8 @@
     @endif
     <div class="p-b-32 p-l-10 p-r-10" style="display:flex; justify-content:space-between;">
         <h3 class="ltext-103 cl5 txt-center respon1" style="text-transform:none;">
-            All Medicines
+            Top 5 Best Selling Medicines
         </h3>
-        <div style="width:150px;">
-            <a href="{{ url('medicines/create') }}" class="flex-c-m stext-101 cl0 size-111 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" style="color:white;">
-                Add New
-            </a>
-        </div>
     </div>
     <div class="m-lr-0-xl">
         <div class="wrap-table-shopping-cart">
@@ -42,10 +37,10 @@
                     <th class="column-6">Faskes 1</th>
                     <th class="column-7">Faskes 2</th>
                     <th class="column-8">Faskes 3</th>
-                    <th class="column-5" style="text-align:center;">Action</th>
+                    <th class="column-5" style="text-align:center;">Total Sold</th>
                 </tr>
 
-                @foreach($medicines as $m)
+                @foreach($medicine as $m)
                 <tr class="table_row">
                     <td class="column-1">
                         <div class="how-itemcart1">
@@ -84,17 +79,7 @@
                         </div>
                     </td>
                     <td class="column-5">
-                        <a href="{{ url('medicines/'.$m->id.'/edit') }}" class="flex-c-m stext-101 cl0 size-111 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-							Edit
-                        </a>
-                        <form method="POST" action="{{ url('medicines/'.$m->id) }}">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="flex-c-m stext-101 cl0 size-111 bg10 bor14 hov-btn4 p-lr-15 m-t-5 trans-04 pointer"
-                            onclick="if(!confirm('Are you sure want to delete this medicine ?')) return false;">
-                            Delete
-                            </button>
-                        </form>
+                        Jumlah Terjual
                     </td>
                 </tr>
                 @endforeach

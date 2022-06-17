@@ -82,4 +82,12 @@ class TransactionController extends Controller
     {
         //
     }
+
+    public function report(){
+        return view("report.transaction");
+    }
+
+    public function bestPurchasing(){
+        return view("report.bestpurchasing");
+    }
 }

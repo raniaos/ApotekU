@@ -43,8 +43,6 @@
 <link rel="stylesheet" href="{{asset('assets/css2/style.css')}}" type="text/css">
 </head>
 <body class="animsition">
-	
-	@yield('javascript')
 
 	<!-- Header -->
 	<header class="@yield('header-class')">
@@ -91,21 +89,45 @@
 							<li class="@yield('home-active')">
 								<a href="{{ url('/') }}">Home</a>
 							</li>
+							<!-- <li class="@yield('medicine-active')">
+								@auth
+									@if(Auth::user()->is_admin)
+										<a href="{{ url('medicines-admin') }}">Medicines</a>
+									@else
+										<a href="{{ url('medicines') }}">Medicines</a>
+									@endif
+								@else
+									<a href="{{ url('medicines') }}">Medicines</a>
+								@endauth
+							</li>
 
+							@auth
+								@if(Auth::user()->is_admin)
+									<li class="@yield('category-active')">
+										<a href="{{url('categories')}}">Categories</a>
+									</li>
+								@endif
+							@endauth -->
 							<li class="@yield('medicine-active')">
-								<a href="{{ url('medicines') }}">Medicines</a>
+								@can('edit-delete-permission')
+									<a href="{{ url('medicines-admin') }}">Medicines</a>
+								@else
+									<a href="{{ url('medicines') }}">Medicines</a>
+								@endcan
 							</li>
 
-							<li class="@yield('category-active')">
-								<a href="{{url('categories')}}">Categories</a>
-							</li>
+							@can('edit-delete-permission')
+								<li class="@yield('category-active')">
+									<a href="{{url('categories')}}">Categories</a>
+								</li>
+							@endcan
 
 							<li class="@yield('report-active')">
 								<a href="#">Reports</a>
 								<ul class="sub-menu">
 									<li><a href="index.html">Transactions</a></li>
-									<li><a href="home-02.html">Best Selling Medicines</a></li>
-									<li><a href="home-03.html">Best Purchasing Customers</a></li>
+									<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
+									<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
 								</ul>
 							</li>
 
@@ -121,7 +143,12 @@
 							<i class="zmdi zmdi-search"></i>
 						</div>
 
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+						<?php $total=0; ?>
+						@if(session('cart'))
+							<?php $total = session('totalCart'); ?>
+						@endif
+
+						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="{{ $total }}" id="cartTotal">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
 
@@ -177,11 +204,28 @@
 					<i class="zmdi zmdi-favorite-outline"></i>
 				</a>
 
+				
 				@guest
-					<!-- <a href="{{ route('login') }}"><i class="zmdi zmdi-account-circle"></i></a> -->
+					<a href="{{ route('login') }}"><i class="zmdi zmdi-account-circle"></i></a>
 				@else
 					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-10 p-r-11">
 						<ul class="main-menu">
+									@guest
+										<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
+											<i class="zmdi zmdi-account-circle"></i>
+										</a>
+									@endguest
+									@auth
+										<i class="zmdi zmdi-account-circle"></i>
+										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
+											<li><a href="#">Edit Account</a></li>
+											<li><a href="#">My Orders</a></li>
+											<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+											<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+												@csrf
+											</form>
+										</ul>
+									@endauth
 							<li style="padding:0 !important; margin:0 !important;">
 								<i class="zmdi zmdi-account-circle"></i>
 								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
@@ -295,58 +339,38 @@
 			
 			<div class="header-cart-content flex-w js-pscroll">
 				<ul class="header-cart-wrapitem w-full">
+					<?php
+                        $totalPrice=0;
+                    ?>
+                    @if(session('cart'))
+                    
+                    @foreach(session('cart') as $id=>$m)
+                    <?php
+                        $totalPrice+=$m['quantity']*$m['price'];
+                    ?>
 					<li class="header-cart-item flex-w flex-t m-b-12">
 						<div class="header-cart-item-img">
-							<img src="{{asset('assets/images/item-cart-01.jpg')}}" alt="IMG">
+							<img src="{{asset('assets/images/medicines/'.$m['photo'])}}" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
 							<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-								White Shirt Pleat
+								{{ $m['name'] }}
 							</a>
 
 							<span class="header-cart-item-info">
-								1 x $19.00
+								{{ $m['quantity'] }} x Rp{{ number_format($m['price'],0,',','.') }},-
 							</span>
 						</div>
 					</li>
+					@endforeach
+                    @endif
 
-					<li class="header-cart-item flex-w flex-t m-b-12">
-						<div class="header-cart-item-img">
-							<img src="{{asset('assets/images/item-cart-02.jpg')}}" alt="IMG">
-						</div>
-
-						<div class="header-cart-item-txt p-t-8">
-							<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-								Converse All Star
-							</a>
-
-							<span class="header-cart-item-info">
-								1 x $39.00
-							</span>
-						</div>
-					</li>
-
-					<li class="header-cart-item flex-w flex-t m-b-12">
-						<div class="header-cart-item-img">
-							<img src="{{asset('assets/images/item-cart-03.jpg')}}" alt="IMG">
-						</div>
-
-						<div class="header-cart-item-txt p-t-8">
-							<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-								Nixon Porter Leather
-							</a>
-
-							<span class="header-cart-item-info">
-								1 x $17.00
-							</span>
-						</div>
-					</li>
 				</ul>
 				
 				<div class="w-full">
 					<div class="header-cart-total w-full p-tb-40">
-						Total: $75.00
+						Total: Rp{{ number_format($totalPrice,0,',','.') }},-
 					</div>
 
 					<div class="header-cart-buttons flex-w w-full">
@@ -593,12 +617,33 @@ Downloaded from <a href="https://themeslab.org/" target="_blank">Themeslab</a>
 
 		/*---------------------------------------------*/
 
-		$('.js-addcart-detail').each(function(){
-			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-			$(this).on('click', function(){
-				swal(nameProduct, "is added to cart !", "success");
+		$('.js-addcart-detail').on('click', function(){
+			var medicineName = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+			var id = $(this).parent().parent().parent().parent().find('.idmedicine').val();
+			var qty = $(this).parent().parent().parent().parent().find('.qtyMedicine').val();
+			console.log(id);
+			console.log(qty);
+			var token_name = $('input[name="_token"]').val();
+			$.ajax({
+				type: 'POST',
+				url: '{{ route("medicines.addToCart") }}',
+				data: { "_token": token_name, 'id':id, 'qty':qty},
+				success: function(data){
+					if (data.status == 'ok'){
+						swal(medicineName, "is added to cart !", "success");
+						$total = data.totalCart;
+						$("div.js-show-cart").attr('data-notify', $total);
+					}
+				}
 			});
 		});
+
+		// $('.js-addcart-detail').each(function(){
+		// 	var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+		// 	$(this).on('click', function(){
+		// 		swal(nameProduct, "is added to cart !", "success");
+		// 	});
+		// });
 	
 	</script>
 <!--===============================================================================================-->

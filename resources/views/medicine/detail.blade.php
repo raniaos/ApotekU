@@ -25,6 +25,7 @@
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
     <div class="container">
         <div class="row">
+            @csrf
             <div class="col-md-6 col-lg-7 p-b-30">
                 <div class="p-l-25 p-r-30 p-lr-0-lg">
                     <div class="wrap-slick3 flex-sb flex-w">
@@ -43,7 +44,7 @@
                     </div>
                 </div>
             </div>
-                
+            
             <div class="col-md-6 col-lg-5 p-b-30">
                 <div class="p-r-50 p-t-5 p-lr-0-lg">
                     <h4 class="mtext-105 cl2 js-name-detail p-b-14">
@@ -51,7 +52,7 @@
                     </h4>
 
                     <span class="mtext-106 cl2">
-                        Rp. {{ $res->price }}
+                        Rp{{ number_format($res->price,0,',','.') }}
                     </span>
 
                     <p class="stext-102 cl3 p-t-23">
@@ -68,17 +69,17 @@
                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                     </div>
 
-                                    <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+                                    <input class="mtext-104 cl3 txt-center num-product qtyMedicine" type="number" name="num-product" value="1" id="qtyMedicine">
 
                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                     </div>
                                 </div>
 
-                                <input type="hidden" name="idmedicine" value="{{ $res->id }}">
-                                <a class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" href="{{ url('addToCart') }}">
+                                <input type="hidden" name="idmedicine" value="{{ $res->id }}" class="idmedicine">
+                                <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                     Add to cart
-                                </a>
+                                </button>
                             </div>
                         </div>	
                     </div>
@@ -91,8 +92,10 @@
                             </a>
                         </div>
                     </div>
-                </div>
             </div>
+            </div>
+               
+            
         </div>
 
         <div class="bor10 m-t-50 p-t-43 p-b-40">

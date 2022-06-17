@@ -153,7 +153,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => 'bupivakain0.5.jpg',
+             'photo' => 'bupivakain0.5.jpeg',
              'category_id'=>3
         ]);
 
@@ -213,7 +213,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '1',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => 'betahistin6.jpeg',
+             'photo' => 'betahistin6.jpg',
              'category_id'=>5
         ]);
 
@@ -243,7 +243,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '0',
              'faskes3' => '1',
-             'photo' => 'azatioprin50.png',
+             'photo' => 'azatioprin50.jpg',
              'category_id'=>6
         ]);
 
@@ -561,7 +561,7 @@ class MedicineSeeder extends Seeder
              'faskes1' => '0',
              'faskes2' => '1',
              'faskes3' => '1',
-             'photo' => 'Vasopresin20.jpeg',
+             'photo' => 'Vasopresin20.JPG',
              'category_id'=>10
         ]);
 

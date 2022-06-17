@@ -36,7 +36,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Category();
+        $data->name = $request->get('name');
+        $data->description = $request->get('description');
+        $data->save();
+
+        return redirect('categories')->with('status','Category has been created');
     }
 
     /**
@@ -58,7 +63,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view("category.edit");
+        $res = $category;
+        return view("category.edit", compact('res'));
     }
 
     /**
@@ -70,7 +76,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->name = $request->get('name');
+        $category->description = $request->get('description');
+        $category->save();
+
+        return redirect('categories')->with('status', 'Category has been updated');
     }
 
     /**
@@ -81,6 +91,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+
+            return redirect('categories')->with('status', 'Successfully deleted the category');
+        } catch(\PDOException $e) {
+            $msg = "Failed to delete category. Please make sure to delete other data that connected with this category.";
+
+            return redirect()->route('category.index')->with('error', $msg);
+        }
     }
 }

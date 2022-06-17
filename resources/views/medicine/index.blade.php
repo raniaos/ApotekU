@@ -10,29 +10,15 @@
     <div class="container">
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
+                <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
                     All Category
                 </button>
 
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".women">
-                    Women
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".men">
-                    Men
-                </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".bag">
-                    Bag
-            </button>
-
-                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".shoes">
-                Shoes
-                </button>
-
-                 <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter=".watches">
-                    Watches
-                </button>
+                @foreach($categories as $cat)
+                    <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter="{{ $cat->name }}">
+                        $cat->name
+                    </button>
+                @endforeach
             </div>
 
             <div class="flex-w flex-c-m m-tb-10">
@@ -251,8 +237,8 @@
         </div>
 
         
-        <div class="row">
-            @foreach($medicine as $m)
+        <div class="row container-medicine">
+            @foreach($medicines as $m)
             <div class="col-sm-4 col-md-4 col-lg-3 p-b-35">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/medicines/'.$m->photo)}}">
@@ -272,7 +258,7 @@
                             <i class="fa fa-star-o"></i>
                             <i class="fa fa-star-o"></i>
                         </div>
-                        <h5>Rp{{ $m->price }},-</h5>
+                        <h5>Rp{{ number_format($m->price,0,',','.') }},-</h5>
                         <div class="product__color__select">
                             <label for="pc-4">
                                 <input type="radio" id="pc-4">
@@ -321,7 +307,7 @@
 
 @endsection
 
-@section('javascript')
+@section('javascript-extra')
 
 <script>
     function getDetailMedicine(id) {
@@ -335,12 +321,10 @@
         })
     }
 
+
 </script>
 
 @endsection
-
-
-
 
 @section('header-class')
 header-v4 how-shadow1
