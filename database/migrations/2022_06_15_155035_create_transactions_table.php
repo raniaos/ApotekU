@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->datetime('date');
-            $table->double('total',12,2);
+            $table->double('total',12,2)->nullable();
         });
     }
 

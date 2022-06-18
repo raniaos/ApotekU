@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use DB;
+use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -14,7 +17,15 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view("transaction.index");
+        $user = Auth::user()->id;
+        $data = Transaction::where('user_id', $user)->orderBy('date','desc')->get();
+        $med = array();
+        foreach ($data as $d) {
+            $dataa = $d->medicines;
+            $totalData = count($dataa)-1;
+            array_push($med, array('tra' => $d, 'med' => $dataa, 'other' => $totalData));
+        }
+        return view("transaction.index", compact('med'));
     }
 
     /**
@@ -28,14 +39,29 @@ class TransactionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in {{ storage. }}
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  {{ $request }}
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $cart = session()->get('cart');
+        $user = Auth::user();
+        $address = $request->get('address_id');
+        $t = new Transaction;
+        $t->address_id = $address;
+        $t->user_id = $user->id;
+        $t->date = Carbon::now()->toDateTimeString();
+        $t->save();
+
+        $total = $t->insertMedicines($cart, $user);
+        $t->total = $total;
+        $t->save();
+
+        session()->forget('cart');
+        return redirect()->route('transactions.index')
+            ->with('status','New transaction successful!');
     }
 
     /**
@@ -88,6 +114,21 @@ class TransactionController extends Controller
     }
 
     public function bestPurchasing(){
-        return view("report.bestpurchasing");
+        $bestPurchasing = DB::table('transactions as t')
+            ->join('users as u', 'u.id', '=', 't.user_id')
+            ->select('t.user_id as id', DB::raw('sum(total) as purchase'),DB::raw('count(t.id) as totalTransaction'))
+            ->orderBy('purchase', 'DESC')
+            ->groupBy('t.user_id')
+            ->limit(3)
+            ->get();
+        $result = array();
+        foreach ($bestPurchasing as $p) {
+                $id = $p->id;
+                $user = DB::table('users')
+                    ->find($id);
+                    // dd($user);
+                array_push($result,['user'=>$user, 'totalPurchase'=>$p->purchase,'totalTransaction'=>$p->totalTransaction]);
+            }
+        return view("report.bestpurchasing",compact('result'));
     }
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Address;
 
 class UserController extends Controller
 {
@@ -14,7 +17,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        dd(User::all());
+        $user = Auth::user()->id;
+        $data = User::where('id', $user)->get();
+        // dd(User::all());
+        dd($data);
     }
 
     /**
@@ -55,9 +61,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        
+        $res = $user;
+        $address = Address::all()->where('user_id','=',$user->id);
+        return view("user.edit",compact('res','address'));
     }
 
     /**
@@ -67,9 +76,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        if ($request->get('password') == $request->get('repeat_password')) {
+            $user->name = $request->get('name');
+            $user->email = $request->get('email');
+            $user->password = Hash::make($request->get('password'));
+            
+            $user->save();
+
+        }
+        else 
+            return redirect()->with('error', 'Password must be same with repeat password');
     }
 
     /**

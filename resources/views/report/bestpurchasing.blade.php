@@ -36,30 +36,15 @@
                     <th class="column-5">Total Spent</th>
                 </tr>
 
-                
+                @foreach($result as $bestPurchase)
                 <tr class="table_row">
-                    <td class="column-1">id</td>
-                    <td class="column-2">name</td>
-                    <td class="column-3">email</td>
-                    <td class="column-3">total transaksi</td>
-                    <td class="column-5">Total nominal</td>
+                    <td class="column-1">{{ $bestPurchase['user']->id }}</td>
+                    <td class="column-2">{{ $bestPurchase['user']->name }}</td>
+                    <td class="column-3">{{ $bestPurchase['user']->email }}</td>
+                    <td class="column-3">{{ $bestPurchase['totalTransaction'] }}</td>
+                    <td class="column-5">Rp{{ number_format($bestPurchase['totalPurchase'],0,',','.') }}</td>
                 </tr>
-
-                <tr class="table_row">
-                    <td class="column-1">id</td>
-                    <td class="column-2">name</td>
-                    <td class="column-3">email</td>
-                    <td class="column-3">total transaksi</td>
-                    <td class="column-5">Total nominal</td>
-                </tr>
-
-                <tr class="table_row">
-                    <td class="column-1">id</td>
-                    <td class="column-2">name</td>
-                    <td class="column-3">email</td>
-                    <td class="column-3">total transaksi</td>
-                    <td class="column-5">Total nominal</td>
-                </tr>
+                @endforeach
             </table>
         </div>
     </div>

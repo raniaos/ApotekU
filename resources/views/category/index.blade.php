@@ -48,7 +48,7 @@
                         <form method="POST" action="{{ url('categories/'.$c->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="flex-c-m stext-101 cl0 size-111 bg10 bor14 hov-btn4 p-lr-15 m-t-5 trans-04 pointer"
+                            <button type="submit" style="margin: 5px auto 0 auto; width: 120px;" class="flex-c-m stext-101 cl0 size-111 bg10 bor14 hov-btn4 p-lr-15 m-t-5 trans-04 pointer"
                             onclick="if(!confirm('Are you sure want to delete this category ?')) return false;">
                             Delete
                             </button>

@@ -19,6 +19,7 @@ Route::resource('medicines', 'MedicineController');
 Route::resource('categories', 'CategoryController');
 Route::resource('transactions', 'TransactionController');
 Route::resource('address', 'AddressController');
+Route::get('address/changeAddress/{id}', 'AddressController@changeAddress');
 Route::resource('users', 'UserController');
 
 Route::middleware(['auth'])->group(function() {

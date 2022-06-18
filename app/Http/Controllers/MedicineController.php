@@ -6,6 +6,8 @@ use App\Medicine;
 use Illuminate\Http\Request;
 use DB;
 use App\Category;
+use App\Address;
+use Illuminate\Support\Facades\Auth;
 
 class MedicineController extends Controller
 {
@@ -240,6 +242,8 @@ class MedicineController extends Controller
     }
 
     public function cart() {
-        return view("cart.index");
+        $user = Auth::user()->id;
+        $address = Address::where('user_id', $user)->get();
+        return view("cart.index", compact('address'));
     }
 }

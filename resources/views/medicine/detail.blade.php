@@ -200,7 +200,7 @@
                                 <i class="fa fa-star-o"></i>
                                 <i class="fa fa-star-o"></i>
                             </div>
-                            <h5>Rp{{ $m->price }},-</h5>
+                            <h5>Rp{{ number_format($m->price,0,',','.') }},-</h5>
                             <div class="product__color__select">
                                 <label for="pc-4">
                                     <input type="radio" id="pc-4">

@@ -25,12 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('add-cart', function($user) {
-            return($user->is_admin==0);
-        });
-
         Gate::define('edit-delete-permission', function($user) {
             return($user->is_admin==1);
+        });
+
+        Gate::define('only-customer', function($user) {
+            return($user->is_admin==0);
         });
     }
 }

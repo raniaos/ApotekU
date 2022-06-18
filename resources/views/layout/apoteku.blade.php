@@ -125,7 +125,7 @@
 							<li class="@yield('report-active')">
 								<a href="#">Reports</a>
 								<ul class="sub-menu">
-									<li><a href="index.html">Transactions</a></li>
+									<li><a href="{{ url('transactions') }}">Transactions</a></li>
 									<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
 									<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
 								</ul>
@@ -148,14 +148,26 @@
 							<?php $total = session('totalCart'); ?>
 						@endif
 
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="{{ $total }}" id="cartTotal">
-							<i class="zmdi zmdi-shopping-cart"></i>
-						</div>
+						@guest
+							<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+								<i class="zmdi zmdi-shopping-cart"></i>
+							</a>
+							<a href="{{ route('login') }}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+								<i class="zmdi zmdi-favorite-outline"></i>
+							</a>
+						@endguest
+						
+						@auth
+							@can('only-customer')
+								<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="{{ $total }}" id="cartTotal">
+									<i class="zmdi zmdi-shopping-cart"></i>
+								</div>
+								<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+									<i class="zmdi zmdi-favorite-outline"></i>
+								</a>
+							@endcan
+						@endauth
 
-						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-							<i class="zmdi zmdi-favorite-outline"></i>
-						</a>
-					
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
 							<ul class="main-menu">
 								<li style="padding:0 !important; margin:0 !important;">
@@ -195,10 +207,20 @@
 				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
 					<i class="zmdi zmdi-search"></i>
 				</div>
-
-				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="2">
-					<i class="zmdi zmdi-shopping-cart"></i>
-				</div>
+	
+				@guest
+					<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+						<i class="zmdi zmdi-shopping-cart"></i>
+					</a>
+				@endguest
+				
+				@auth
+					@can('add-cart')
+						<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="0">
+							<i class="zmdi zmdi-shopping-cart"></i>
+						</div>
+					@endcan
+				@endauth
 
 				<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
 					<i class="zmdi zmdi-favorite-outline"></i>
@@ -210,22 +232,22 @@
 				@else
 					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-10 p-r-11">
 						<ul class="main-menu">
-									@guest
-										<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
-											<i class="zmdi zmdi-account-circle"></i>
-										</a>
-									@endguest
-									@auth
-										<i class="zmdi zmdi-account-circle"></i>
-										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
-											<li><a href="#">Edit Account</a></li>
-											<li><a href="#">My Orders</a></li>
-											<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
-											<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-												@csrf
-											</form>
-										</ul>
-									@endauth
+							@guest
+								<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
+									<i class="zmdi zmdi-account-circle"></i>
+								</a>
+							@endguest
+							@auth
+								<i class="zmdi zmdi-account-circle"></i>
+								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
+									<li><a href="#">Edit Account</a></li>
+									<li><a href="#">My Orders</a></li>
+									<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
+									<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+										@csrf
+									</form>
+								</ul>
+							@endauth
 							<li style="padding:0 !important; margin:0 !important;">
 								<i class="zmdi zmdi-account-circle"></i>
 								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
@@ -325,7 +347,6 @@
 	<!-- Cart -->
 	<div class="wrap-header-cart js-panel-cart">
 		<div class="s-full js-hide-cart"></div>
-
 		<div class="header-cart flex-col-l p-l-65 p-r-25">
 			<div class="header-cart-title flex-w flex-sb-m p-b-8">
 				<span class="mtext-103 cl2">

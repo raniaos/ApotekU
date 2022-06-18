@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
@@ -25,7 +26,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
+        return view("address.create");
     }
 
     /**
@@ -36,7 +37,17 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Address();
+        $data->name = $request->get('name');
+        $data->address = $request->get('address');
+        $data->districts = $request->get('districts');
+        $data->city = $request->get('city');
+        $data->province = $request->get('province');
+        $data->postal_code = $request->get('postal_code');
+        $data->user_id = Auth::User()->id;
+        $data->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -58,7 +69,8 @@ class AddressController extends Controller
      */
     public function edit(Address $address)
     {
-        //
+        $res = $address;
+        return view("address.edit",compact('res'));
     }
 
     /**
@@ -70,7 +82,15 @@ class AddressController extends Controller
      */
     public function update(Request $request, Address $address)
     {
-        //
+        $address->name = $request->get('name');
+        $address->address = $request->get('address');
+        $address->districts = $request->get('districts');
+        $address->city = $request->get('city');
+        $address->province = $request->get('province');
+        $address->postal_code = $request->get('postal_code');
+        $address->user_id = Auth::User()->id;
+        $address->save();
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -81,6 +101,23 @@ class AddressController extends Controller
      */
     public function destroy(Address $address)
     {
-        //
+        try {
+            $address->delete();
+
+            // return redirect('medadmin')->with('status', 'Successfully deleted the medicine');
+        } catch(\PDOException $e) {
+            $msg = "Failed to delete medicine. Please make sure to delete other data that connected with this medicine.";
+
+            // return redirect()->route('medicines.index')->with('error', $msg);
+        }
+    }
+
+    public function changeAddress($id) {
+        $data = Address::find($id);
+        // dd($data);
+        // $medicines = $data->medicines;
+        return response()->json(array(
+            'msg' => " ".$data->address."<br>".$data->districts.", ". $data->city. "<br>".$data->province." ".$data->postal_code
+        ), 200);
     }
 }

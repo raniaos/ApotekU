@@ -83,12 +83,14 @@
                         </div>
 
                         <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                            <button type="submit">Update Cart</button>
+                            <button type="submit" id="updateCartButton">Update Cart</button>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </form>
+        <form method="POST" action="{{ url('transactions') }}">
+            @csrf
             <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
                 <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
                     <h4 class="mtext-109 cl2 p-b-30">
@@ -128,21 +130,17 @@
                                 </span>
 
                                 <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                                    <select class="js-select2" name="time">
-                                        <option>Select a country...</option>
-                                        <option>USA</option>
-                                        <option>UK</option>
+                                    <select class="js-select2" name="address_id" id="address_combobox">
+                                        <option value="0">Select address</option>
+                                        @foreach($address as $a)
+                                            <option value="{{ $a->id }}">{{ $a->name }}</option>
+                                        @endforeach
                                     </select>
                                     <div class="dropDownSelect2"></div>
                                 </div>
-
-                                <div class="bor8 bg0 m-b-12">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="state" placeholder="State /  country">
-                                </div>
-
-                                <div class="bor8 bg0 m-b-22">
-                                    <input class="stext-111 cl8 plh3 size-111 p-lr-15" type="text" name="postcode" placeholder="Postcode / Zip">
-                                </div>
+                                <p class="stext-111 cl6 p-t-2" id="addressDetail">
+                                    Choose Address
+                                </p>
                                 
                                 <div class="flex-w">
                                     <div class="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
@@ -192,6 +190,19 @@
         })
     }
 
+    $('#address_combobox').on('change', function() {
+        var id = $("#address_combobox option:selected").val();
+        if (id != 0) {
+            $.ajax({
+                type:'GET',
+                url:'{{url("address/changeAddress")}}/'+id,
+                success:function(data) {
+                $("#addressDetail").html(data.msg);
+                }
+            });
+        }
+        else $("#addressDetail").html("Choose Address");
+    });
 
 </script>
 

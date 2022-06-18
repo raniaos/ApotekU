@@ -28,7 +28,7 @@
 <!-- Shoping Cart -->
 <div class="container">
     <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50 m-t-50" style="padding: 0 !important;">
-        <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+        <div class="bor10 p-lr-40 p-t-30 p-b-40 m-lr-0-xl p-lr-15-sm">
             <h4 class="mtext-109 cl2 p-b-30">
                 Transaction Detail
             </h4>
@@ -106,7 +106,7 @@
         </div>
     </div>
     <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50 m-t-50" style="padding: 0 !important;">
-            <div class="m-l-25 m-r--38 m-lr-0-xl">
+            <div class="m-lr-0-xl">
                 <div class="wrap-table-shopping-cart">
                     <table class="table-shopping-cart">
                         <tr class="table_head">
