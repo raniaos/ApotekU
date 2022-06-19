@@ -21,11 +21,12 @@ Route::resource('transactions', 'TransactionController');
 Route::resource('address', 'AddressController');
 Route::get('address/changeAddress/{id}', 'AddressController@changeAddress');
 Route::resource('users', 'UserController');
+Route::get("about", function(){
+    return view("about.index");
+ });
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/home', 'HomeController@index');
-    
-    Route::get('/medicines-admin', 'MedicineController@admin');
 });
 Auth::routes();
 Route::post('/medicines/getDetailMedicine', 'MedicineController@getDetail')->name('medicines.getDetailMedicine');

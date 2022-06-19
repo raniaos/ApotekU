@@ -52,25 +52,7 @@
 			<div class="top-bar">
 				<div class="content-topbar flex-sb-m h-full container">
 					<div class="left-top-bar">
-						Free shipping for standard order over $100
-					</div>
-
-					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							USD
-						</a>
+						Free shipping for all orders in Indonesia
 					</div>
 				</div>
 			</div>
@@ -79,8 +61,8 @@
 				<nav class="limiter-menu-desktop container">
 					
 					<!-- Logo desktop -->		
-					<a href="#" class="logo">
-						<img src="{{asset('assets/images/icons/logo-01.png')}}" alt="IMG-LOGO">
+					<a href="{{url('/')}}" class="logo">
+						<img style="max-width:60%;" src="{{asset('assets/images/icons/logo-01.png')}}" alt="IMG-LOGO">
 					</a>
 
 					<!-- Menu desktop -->
@@ -89,50 +71,32 @@
 							<li class="@yield('home-active')">
 								<a href="{{ url('/') }}">Home</a>
 							</li>
-							<!-- <li class="@yield('medicine-active')">
-								@auth
-									@if(Auth::user()->is_admin)
-										<a href="{{ url('medicines-admin') }}">Medicines</a>
-									@else
-										<a href="{{ url('medicines') }}">Medicines</a>
-									@endif
-								@else
-									<a href="{{ url('medicines') }}">Medicines</a>
-								@endauth
+
+							<li class="@yield('medicine-active')">
+								<a href="{{ url('medicines') }}">Medicines</a>
 							</li>
 
 							@auth
-								@if(Auth::user()->is_admin)
+								@can('edit-delete-permission')
 									<li class="@yield('category-active')">
 										<a href="{{url('categories')}}">Categories</a>
 									</li>
-								@endif
-							@endauth -->
-							<li class="@yield('medicine-active')">
-								@can('edit-delete-permission')
-									<a href="{{ url('medicines-admin') }}">Medicines</a>
-								@else
-									<a href="{{ url('medicines') }}">Medicines</a>
 								@endcan
-							</li>
+							@endauth
 
-							@can('edit-delete-permission')
-								<li class="@yield('category-active')">
-									<a href="{{url('categories')}}">Categories</a>
+							@auth
+								<li class="@yield('report-active')">
+									<a href="#">Reports</a>
+									<ul class="sub-menu">
+										<li><a href="{{ url('transactions') }}">Transactions</a></li>
+										<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
+										<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
+									</ul>
 								</li>
-							@endcan
-
-							<li class="@yield('report-active')">
-								<a href="#">Reports</a>
-								<ul class="sub-menu">
-									<li><a href="{{ url('transactions') }}">Transactions</a></li>
-									<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
-									<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
-								</ul>
-							</li>
+							@endauth
 
 							<li class="@yield('about-active')">
-								<a href="about.html">About</a>
+								<a href="{{url('about')}}">About</a>
 							</li>
 						</ul>
 					</div>	
@@ -147,15 +111,6 @@
 						@if(session('cart'))
 							<?php $total = session('totalCart'); ?>
 						@endif
-
-						@guest
-							<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
-								<i class="zmdi zmdi-shopping-cart"></i>
-							</a>
-							<a href="{{ route('login') }}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-								<i class="zmdi zmdi-favorite-outline"></i>
-							</a>
-						@endguest
 						
 						@auth
 							@can('only-customer')
@@ -166,27 +121,32 @@
 									<i class="zmdi zmdi-favorite-outline"></i>
 								</a>
 							@endcan
+						@else
+							<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
+								<i class="zmdi zmdi-shopping-cart"></i>
+							</a>
+							<a href="{{ route('login') }}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+								<i class="zmdi zmdi-favorite-outline"></i>
+							</a>
 						@endauth
 
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
 							<ul class="main-menu">
 								<li style="padding:0 !important; margin:0 !important;">
-									@guest
-										<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
-											<i class="zmdi zmdi-account-circle"></i>
-										</a>
-									@endguest
 									@auth
 										<i class="zmdi zmdi-account-circle"></i>
 										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
-											<!-- <li><a href="{{ url('users/'.$m->id.'/edit') }}">Edit Account</a></li> -->
-											<li><a href="#">Edit Account</a></li>
+											<li><a href="{{ url('users/'.Auth::user()->id).'/edit' }}">Edit Account</a></li>
 											<li><a href="#">My Orders</a></li>
 											<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 											<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 												@csrf
 											</form>
 										</ul>
+									@else
+										<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
+											<i class="zmdi zmdi-account-circle"></i>
+										</a>
 									@endauth
 								</li>
 							</ul>
@@ -208,58 +168,46 @@
 				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
 					<i class="zmdi zmdi-search"></i>
 				</div>
-	
-				@guest
+
+				@auth
+					@can('only-customer')
+						<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="{{ $total }}" id="cartTotal">
+							<i class="zmdi zmdi-shopping-cart"></i>
+						</div>
+						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+							<i class="zmdi zmdi-favorite-outline"></i>
+						</a>
+					@endcan
+				@else
 					<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</a>
-				@endguest
-				
-				@auth
-					@can('add-cart')
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="0">
-							<i class="zmdi zmdi-shopping-cart"></i>
-						</div>
-					@endcan
+					<a href="{{ route('login') }}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+						<i class="zmdi zmdi-favorite-outline"></i>
+					</a>
 				@endauth
 
-				<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
-					<i class="zmdi zmdi-favorite-outline"></i>
-				</a>
-
-				
-				@guest
-					<a href="{{ route('login') }}"><i class="zmdi zmdi-account-circle"></i></a>
-				@else
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-10 p-r-11">
-						<ul class="main-menu">
-							@guest
-								<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
-									<i class="zmdi zmdi-account-circle"></i>
-								</a>
-							@endguest
+				<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
+					<ul class="main-menu">
+						<li style="padding:0 !important; margin:0 !important;">
 							@auth
 								<i class="zmdi zmdi-account-circle"></i>
 								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
-									<li><a href="#">Edit Account</a></li>
+									<li><a href="{{ url('users/'.Auth::user()->id).'/edit' }}">Edit Account</a></li>
 									<li><a href="#">My Orders</a></li>
 									<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 									<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 										@csrf
 									</form>
 								</ul>
+							@else
+								<a href="{{ route('login') }}" class="dis-block p-0" style="font-size: 26px">
+									<i class="zmdi zmdi-account-circle"></i>
+								</a>
 							@endauth
-							<li style="padding:0 !important; margin:0 !important;">
-								<i class="zmdi zmdi-account-circle"></i>
-								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
-									<li><a href="#">Edit Account</a></li>
-									<li><a href="#">My Orders</a></li>
-									<li><a href="#">Logout</a></li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				@endguest
+						</li>
+					</ul>
+				</div>
 			</div>
 
 			<!-- Button show menu -->
@@ -276,54 +224,41 @@
 			<ul class="topbar-mobile">
 				<li>
 					<div class="left-top-bar">
-						Free shipping for standard order over $100
-					</div>
-				</li>
-
-				<li>
-					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							Help & FAQs
-						</a>
-
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							USD
-						</a>
+						Free shipping for all orders in Indonesia
 					</div>
 				</li>
 			</ul>
 
 			<ul class="main-menu-m">
-				<li>
-					<a href="index.html">Home</a>
+				<li class="@yield('home-active')">
+					<a href="{{ url('/') }}">Home</a>
 				</li>
 
-				<li>
-					<a href="product.html">Shop</a>
+				<li class="@yield('medicine-active')">
+					<a href="{{ url('medicines') }}">Medicines</a>
 				</li>
 
-				<li>
-					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
-				</li>
+				@auth
+					@can('edit-delete-permission')
+						<li class="@yield('category-active')">
+							<a href="{{url('categories')}}">Categories</a>
+						</li>
+					@endcan
+				@endauth
 
-				<li>
-					<a href="blog.html">Blog</a>
-				</li>
+				@auth
+					<li class="@yield('report-active')">
+						<a href="#">Reports</a>
+						<ul class="sub-menu">
+							<li><a href="{{ url('transactions') }}">Transactions</a></li>
+							<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
+							<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
+						</ul>
+					</li>
+				@endauth
 
-				<li>
-					<a href="about.html">About</a>
-				</li>
-
-				<li>
-					<a href="contact.html">Contact</a>
+				<li class="@yield('about-active')">
+					<a href="{{url('about')}}">About</a>
 				</li>
 			</ul>
 		</div>
@@ -397,10 +332,6 @@
 					<div class="header-cart-buttons flex-w w-full">
 						<a href="{{ url('cart') }}" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
 							View Cart
-						</a>
-
-						<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-							Check Out
 						</a>
 					</div>
 				</div>

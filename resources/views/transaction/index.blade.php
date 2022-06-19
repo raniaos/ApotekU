@@ -13,6 +13,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span>{{ session('error') }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="p-b-32 p-l-10 p-r-10" style="display:flex; justify-content:space-between;">
         <h3 class="ltext-103 cl5 txt-center respon1" style="text-transform:none;">
             All Transactions

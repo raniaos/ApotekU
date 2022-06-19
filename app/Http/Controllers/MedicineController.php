@@ -22,13 +22,13 @@ class MedicineController extends Controller
         $medicines = Medicine::all();
         $selected = "all";
 
-        return view("medicine.index", compact("medicines", "categories", "selected"));
-    }
-
-    public function admin(){
-        $categories = Category::all();
-        $medicines = Medicine::all();
-        return view("medicineadmin.index", compact("medicines", "categories"));
+        if (Auth::user()) {
+            if (Auth::user()->is_admin)
+{
+                return view("medicineadmin.index", compact("medicines", "categories"));
+            }        } else {
+            return view("medicine.index", compact("medicines", "categories", "selected"));
+        }
     }
 
     /**
@@ -175,7 +175,7 @@ class MedicineController extends Controller
         $qty = $request->get('qty');
         $p=Medicine::find($id);
         $cart=session()->get('cart');
-        if(!isset($cart[$id])){
+        if (!isset($cart[$id])){
             $cart[$id]=[
                 "id"=>$id,
                 "name"=>$p->generic_name,

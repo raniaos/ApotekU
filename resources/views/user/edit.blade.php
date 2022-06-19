@@ -6,6 +6,22 @@
 
 @section('content')
 <!-- Product -->
+
+
+@if(session('status'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <span>{{ session('status') }}</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span>{{ session('error') }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
 <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50 m-t-50">
     <section class="bg0 p-b-60">
 		<div class="container">
@@ -55,6 +71,7 @@
                     <th class="column-2">Address</th>
                     <th class="column-5" style="text-align:center;">Action</th>
                 </tr>
+                
                 @foreach($address as $a)
                 <tr class="table_row">
                     <td class="column-1" style="padding-top:0; padding-bottom:20px;">{{ $a->name }}</td>

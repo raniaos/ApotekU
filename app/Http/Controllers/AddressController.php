@@ -47,7 +47,8 @@ class AddressController extends Controller
         $data->user_id = Auth::User()->id;
         $data->save();
 
-        return redirect()->back();
+        return redirect('users/'.Auth::user()->id.'/edit')->with('status', 'Successfully added new address!');
+        // return redirect()->back();
     }
 
     /**
@@ -91,7 +92,7 @@ class AddressController extends Controller
         $address->user_id = Auth::User()->id;
         $address->save();
         $id = Auth::User()->id;
-        return redirect('/')->with('status', 'Successfully edited account!');
+        return redirect('users/'.Auth::user()->id.'/edit')->with('status', 'Successfully edited address!');
     }
 
     /**
@@ -105,11 +106,11 @@ class AddressController extends Controller
         try {
             $address->delete();
 
-            // return redirect('medadmin')->with('status', 'Successfully deleted the medicine');
+            return redirect('users/'.Auth::user()->id.'/edit')->with('status', 'Successfully deleted address!');
         } catch(\PDOException $e) {
             $msg = "Failed to delete medicine. Please make sure to delete other data that connected with this medicine.";
 
-            // return redirect()->route('medicines.index')->with('error', $msg);
+            return redirect('users/'.Auth::user()->id.'/edit')->with('error', 'Failed to delete address.');
         }
     }
 

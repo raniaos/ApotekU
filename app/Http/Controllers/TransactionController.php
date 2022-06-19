@@ -46,22 +46,29 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $cart = session()->get('cart');
-        $user = Auth::user();
         $address = $request->get('address_id');
-        $t = new Transaction;
-        $t->address_id = $address;
-        $t->user_id = $user->id;
-        $t->date = Carbon::now()->toDateTimeString();
-        $t->save();
+        if($address != 0) {
+            $cart = session()->get('cart');
+            $user = Auth::user();
+            $t = new Transaction;
+            $t->address_id = $address;
+            $t->user_id = $user->id;
+            $t->date = Carbon::now()->toDateTimeString();
+            $t->save();
 
-        $total = $t->insertMedicines($cart, $user);
-        $t->total = $total;
-        $t->save();
+            $total = $t->insertMedicines($cart, $user);
+            $t->total = $total;
+            $t->save();
 
-        session()->forget('cart');
-        return redirect()->route('transactions.index')
-            ->with('status','New transaction successful!');
+            session()->forget('cart');
+            return redirect()->route('transactions.index')
+                ->with('status','New transaction successful!');
+        }
+        else {
+            return redirect()->back()
+                ->with('error','Choose address first!');
+        }
+        
     }
 
     /**
@@ -72,7 +79,13 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        return view("transaction.detail");
+        $res = Transaction::where('id','=',$transaction->id)->get();
+        $med = array();
+        // dd($res);
+        $data = $res->medicines;
+        array_push($med, array('tra' => $d, 'med' => $data));
+        dd($med);
+        return view("transaction.detail",compact('transaction'));
     }
 
     /**
@@ -141,4 +154,4 @@ class TransactionController extends Controller
             'msg' => view('medicine.getDetail', compact('data', 'category'))->render()
         ), 200);
     }
-}
+}{{  }}

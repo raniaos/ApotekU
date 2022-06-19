@@ -19,7 +19,12 @@
     </div>
 </div>
     
-
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span>{{ session('error') }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
 <!-- Shoping Cart -->
 <form class="bg0 p-t-75 p-b-85" method="POST" action="{{ url('medicines/updateCart') }}">
     @csrf
@@ -214,4 +219,4 @@ header-v4 how-shadow1
 
 @section('medicine-active')
 active-menu
-@endsection
+@endsection{{  }}
