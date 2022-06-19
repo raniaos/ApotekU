@@ -16,7 +16,6 @@
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Edit Address
                     </h4>
-
                     <div class="bor8 m-b-20 how-pos4-parent">
                         <input class="stext-111 cl2 plh3 size-116 p-l-30 p-r-30" type="text" name="name" placeholder="Name" value="{{ $res->name }}">
                     </div>

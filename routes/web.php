@@ -32,6 +32,7 @@ Route::post('/medicines/getDetailMedicine', 'MedicineController@getDetail')->nam
 Route::post('/addToCart', 'MedicineController@addToCart')->name('medicines.addToCart');
 Route::post('/medicines/updateCart', 'MedicineController@updateCart')->name('medicines.updateCart');
 Route::get('/cekcart', 'MedicineController@cekcart');
+Route::get('/medicines/getMedicineByCategory/{id}/{name}', 'MedicineController@getMedicineByCategory')->name('medicines.getMedicineByCategory');
 
 //jgn dihapus lg coba"
 Route::get('obatlaris', 'MedicineController@ObatTerlaris');

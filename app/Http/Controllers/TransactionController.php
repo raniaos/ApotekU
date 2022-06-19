@@ -131,4 +131,14 @@ class TransactionController extends Controller
             }
         return view("report.bestpurchasing",compact('result'));
     }
+
+    public function getDetail(Request $request) {
+        $id = $request->get('id');
+        $data = Transaction::find($id);
+        $medicine = Medicine::all();
+        return response() -> json(array(
+            'status' => 'ok',
+            'msg' => view('medicine.getDetail', compact('data', 'category'))->render()
+        ), 200);
+    }
 }

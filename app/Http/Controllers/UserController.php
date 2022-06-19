@@ -19,6 +19,7 @@ class UserController extends Controller
     {
         $user = Auth::user()->id;
         $data = User::where('id', $user)->get();
+        // return view("users.edit", compact('data'));
         // dd(User::all());
         dd($data);
     }

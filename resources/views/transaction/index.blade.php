@@ -51,7 +51,9 @@
                             <td class="column-5" style="padding-bottom: 0;">Rp{{ number_format($m['med'][0]->pivot->price*$m['med'][0]->pivot->quantity,0,',','.' )}},-</td>
                         </tr>
                     </table>
-                    <p style="padding-left: 50px; margin:0;">+{{ $m['other'] }} other products</p>
+                    @if($m['other'] != 0)
+                        <p style="padding-left: 50px; margin:0;">+{{ $m['other'] }} other products</p>
+                    @endif
                 </div>
                 <div style="display:flex; justify-content: space-between;align-items:center;">
                     <p class="stext-110 cl2" style="margin:0;"><b>Total &nbsp; &nbsp;</b>Rp{{ number_format($m['tra']['total'],0,',','.') }},-</p>

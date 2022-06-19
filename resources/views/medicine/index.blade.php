@@ -10,14 +10,22 @@
     <div class="container">
         <div class="flex-w flex-sb-m p-b-52">
             <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
+                <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 {{ $selected == 'all' ? 'how-active1' : '' }}" onclick="getMedicines(0, 'all')">
                     All Category
                 </button>
 
                 @foreach($categories as $cat)
-                    <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5" data-filter="{{ $cat->name }}">
-                        {{ $cat->name }}
-                    </button>
+                    @if ($cat->name == $selected)
+                        <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1"
+                            onclick="getMedicines({{ $cat->id }}, '{{ $cat->name }}')">
+                            {{ $cat->name }}
+                        </button>
+                    @else
+                        <button class="category-filter stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+                            onclick="getMedicines({{ $cat->id }}, '{{ $cat->name }}')">
+                            {{ $cat->name }}
+                        </button>
+                    @endif
                 @endforeach
             </div>
 
@@ -235,7 +243,6 @@
                 </div>
             </div>
         </div>
-
         
         <div class="row container-medicine">
             @foreach($medicines as $m)
@@ -303,8 +310,23 @@
     </div>
 </div>
 
+<script>
+    /*==================================================================
+    [ Show modal1 ]*/
+    $('.js-show-modal1').on('click',function(e){
+        e.preventDefault();
+        $('.js-modal1').addClass('show-modal1');
+    });
 
+    $('.js-hide-modal1').on('click',function(){
+        $('.js-modal1').removeClass('show-modal1');
+    });
 
+    $('.set-bg').each(function () {
+        var bg = $(this).data('setbg');
+        $(this).css('background-image', 'url(' + bg + ')');
+    });
+</script>
 @endsection
 
 @section('javascript-extra')
@@ -321,7 +343,16 @@
         })
     }
 
-
+    function getMedicines(categoryId, nameSelected) {
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: 'medicines/getMedicineByCategory/'+categoryId+'/'+nameSelected,
+            success: function(data){
+                $('#content-medicine').html(data.msg);
+            }
+        });
+    }
 </script>
 
 @endsection

@@ -90,7 +90,8 @@ class AddressController extends Controller
         $address->postal_code = $request->get('postal_code');
         $address->user_id = Auth::User()->id;
         $address->save();
-        return redirect()->back()->withInput();
+        $id = Auth::User()->id;
+        return redirect('/')->with('status', 'Successfully edited account!');
     }
 
     /**

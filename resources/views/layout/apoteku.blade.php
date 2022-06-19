@@ -179,6 +179,7 @@
 									@auth
 										<i class="zmdi zmdi-account-circle"></i>
 										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
+											<!-- <li><a href="{{ url('users/'.$m->id.'/edit') }}">Edit Account</a></li> -->
 											<li><a href="#">Edit Account</a></li>
 											<li><a href="#">My Orders</a></li>
 											<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
@@ -364,27 +365,26 @@
                         $totalPrice=0;
                     ?>
                     @if(session('cart'))
-                    
-                    @foreach(session('cart') as $id=>$m)
-                    <?php
-                        $totalPrice+=$m['quantity']*$m['price'];
-                    ?>
-					<li class="header-cart-item flex-w flex-t m-b-12">
-						<div class="header-cart-item-img">
-							<img src="{{asset('assets/images/medicines/'.$m['photo'])}}" alt="IMG">
-						</div>
+						@foreach(session('cart') as $id=>$m)
+						<?php
+							$totalPrice+=$m['quantity']*$m['price'];
+						?>
+						<li class="header-cart-item flex-w flex-t m-b-12">
+							<div class="header-cart-item-img">
+								<img src="{{asset('assets/images/medicines/'.$m['photo'])}}" alt="IMG">
+							</div>
 
-						<div class="header-cart-item-txt p-t-8">
-							<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-								{{ $m['name'] }}
-							</a>
+							<div class="header-cart-item-txt p-t-8">
+								<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+									{{ $m['name'] }}
+								</a>
 
-							<span class="header-cart-item-info">
-								{{ $m['quantity'] }} x Rp{{ number_format($m['price'],0,',','.') }},-
-							</span>
-						</div>
-					</li>
-					@endforeach
+								<span class="header-cart-item-info">
+									{{ $m['quantity'] }} x Rp{{ number_format($m['price'],0,',','.') }},-
+								</span>
+							</div>
+						</li>
+						@endforeach
                     @endif
 
 				</ul>
@@ -408,7 +408,9 @@
 		</div>
 	</div>
 
-	@yield('content')
+	<div id="content-medicine">
+		@yield('content')
+	</div>
 
 	<!-- Footer -->
 	<footer class="bg3 p-t-75 p-b-32">

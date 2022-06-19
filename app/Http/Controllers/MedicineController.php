@@ -20,8 +20,9 @@ class MedicineController extends Controller
     {
         $categories = Category::all();
         $medicines = Medicine::all();
-        // dd($data);
-        return view("medicine.index", compact("medicines", "categories"));
+        $selected = "all";
+
+        return view("medicine.index", compact("medicines", "categories", "selected"));
     }
 
     public function admin(){
@@ -143,6 +144,19 @@ class MedicineController extends Controller
         $data = DB::table('medicines as m')->join('medicine_transaction as mt', 'm.id', '=', 'mt.medicine_id')->select('mt.medicine_id', DB::raw('sum(quantity) as qty'))->orderBy('qty', 'DESC')->groupBy('mt.medicine_id')->get();
 
         dd($data);
+    }
+
+    public function getMedicineByCategory($id, $name) {
+        $medicines = $id != 0 ? Medicine::where('category_id', $id)->get() : Medicine::all();
+        $categories = Category::all();
+        $selected = $name;
+
+        $view = view('medicine.index', compact('medicines', 'categories', 'selected'));
+        $sections = $view->renderSections();
+
+        return response() -> json(array(
+            'msg' => $sections['content'],
+        ));
     }
 
     public function getDetail(Request $request) {
