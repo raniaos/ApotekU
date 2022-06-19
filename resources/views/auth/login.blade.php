@@ -1,7 +1,7 @@
 @extends('layout.apoteku')
 
 @section('title')
-    Login
+    Login - Apotek U
 @endsection
 
 @section('content')

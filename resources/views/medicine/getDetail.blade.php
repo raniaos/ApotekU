@@ -28,15 +28,22 @@
         </span>
         <p class="stext-102 cl3 p-t-23">
             @if($data->description != "")
-                $data->description
+                {{$data->description}}
             @else
                 No description provided
+            @endif
+        </p>
+        <p class="stext-102 cl3 p-t-5">
+            <b>Restriction Formula</b><br>
+            @if($data->restriction_formula != "")
+                {{$data->restriction_formula}}
+            @else
+                No restriction information provided
             @endif
         </p>
         <div class="stext-102 cl3" style="display:flex;">
             <div style="width: 100px;">
                 <b>Form</b><br>
-                <b>Restriction</b><br>
                 <b>Category</b><br>
                 <b>Faskes 1</b><br>
                 <b>Faskes 2</b><br>
@@ -44,13 +51,13 @@
             </div>
             <div>
                 {{ $data->form }}<br>
-                {{ $data->restriction_formula }}<br>
                 {{ $data->category->name }}<br>
                 @if($data->faskes1 == 1) Available @else Unavailable @endif<br>
                 @if($data->faskes2 == 1) Available @else Unavailable @endif<br>
                 @if($data->faskes3 == 1) Available @else Unavailable @endif<br>
             </div>    
         </div>
+        @can('only-customer')
         <div class="p-t-33">
             <div class="flex-w flex-r-m p-b-10">
                 <div class="size-204 flex-w flex-m respon6-next">
@@ -64,12 +71,13 @@
                         </div>
                     </div>
                     <input type="hidden" name="idmedicine" value="{{ $data->id }}" class="idmedicine">
-                    <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                    <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail-modal" location="modal" generic="{{ $data->generic_name }}" id="{{ $data->id }}">
                         Add to cart
                     </button>
                 </div>
             </div>	
         </div>
+        @endcan
     </div>
 </div>
 <script>
@@ -81,5 +89,41 @@
     $('.btn-num-product-up').on('click', function(){
         var numProduct = Number($(this).prev().val());
         $(this).prev().val(numProduct + 1);
+    });
+
+    $('.js-addcart-detail-modal').on('click', function(){
+        var medicineName = $(this).attr("generic");;
+        var id = $(this).attr("id");
+        var qty = $("#qtyMedicine").val();
+
+        var token_name = $('input[name="_token"]').val();
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("medicines.addToCart") }}',
+            data: { "_token": token_name, 'id':id, 'qty':qty},
+            success: function(data){
+                if (data.status == 'ok'){
+                    swal(medicineName, "is added to cart !", "success");
+                    var total = data.totalCart;
+                    var name = data.name;
+                    var price = data.price;
+                    var photo = data.photo;
+                    $("div.js-show-cart").attr('data-notify', total);
+                    var tot = parseInt($('#totalCartBar').attr('total'));
+                    t = qty*price;
+                    totalPrice = tot + qty * price;
+                    $('#totalCartBar').attr('total', totalPrice);
+                    $('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");
+                    var carttt = data.cart;
+                    $('#ulCartBar').html("");
+                    $.each(carttt, function(id, isiArray) {
+                        var p = isiArray['photo'];
+                        var text = `<li class="header-cart-item flex-w flex-t m-b-12"><div class="header-cart-item-img">
+                        <img src="{{asset('assets/images/medicines/`+ p +`')}}" alt="IMG"></div><div class="header-cart-item-txt p-t-8"><a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">`+isiArray['name']+`</a><span class="header-cart-item-info">`+isiArray['quantity']+` x Rp`+ isiArray['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+`,-</span></div></li>`;
+                        $("#ulCartBar").append(text);
+                    });
+                }
+            }
+        });
     });
 </script>

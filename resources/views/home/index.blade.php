@@ -1,7 +1,7 @@
 @extends('layout.apoteku')
 
 @section('title')
-    Home
+    Home - Apotek U
 @endsection
 
 @section('content')
@@ -191,8 +191,9 @@
                                 <div class="product__item">
                                     <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/medicines/'.$m->photo)}}">
                                         <ul class="product__hover">
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                            <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
+                                            @can('only-customer')
+                                            <li class="js-addcart-detail" location="list" generic="{{ $m->generic_name }}" id="{{ $m->id }}"><a><img src="{{ asset('assets/images/icon/cart.png') }}" alt=""><span>Add to Cart</span></a></li>
+                                            @endcan
                                             <li><a href="#modalDetail" onclick="getDetailMedicine({{ $m->id }})" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
                                         </ul>
                                     </div>
@@ -252,7 +253,7 @@
                             <p>Seconds</p>
                         </div>
                     </div>
-                    <a href="#" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">Shop now</a>
+                    <a href="{{url('medicines')}}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">Shop now</a>
                 </div>
             </div>
         </div>
@@ -261,11 +262,11 @@
 <!-- Categories Section End -->
 
 <!-- Blog -->
-<section class="sec-blog bg0 p-t-60 p-b-90">
+<section class="sec-blog bg0 p-t-60 p-b-90" id="news">
     <div class="container">
         <div class="p-b-66">
             <h3 class="ltext-105 cl5 txt-center respon1">
-                Our Blogs
+                Our News
             </h3>
         </div>
 
@@ -273,7 +274,7 @@
             <div class="col-sm-6 col-md-4 p-b-40">
                 <div class="blog-item">
                     <div class="hov-img0">
-                        <a href="blog-detail.html">
+                        <a href="#news">
                             <img src="{{asset('assets/images/blog-01.jpg')}}" alt="IMG-BLOG">
                         </a>
                     </div>
@@ -288,7 +289,7 @@
                         </div>
 
                         <h4 class="p-b-12">
-                            <a href="blog-detail.html" class="mtext-101 cl2 hov-cl1 trans-04">
+                            <a href="#news" class="mtext-101 cl2 hov-cl1 trans-04">
                                 Pharmacy Renovated
                             </a>
                         </h4>
@@ -303,7 +304,7 @@
             <div class="col-sm-6 col-md-4 p-b-40">
                 <div class="blog-item">
                     <div class="hov-img0">
-                        <a href="blog-detail.html">
+                        <a href="#news">
                             <img src="{{asset('assets/images/blog-02.jpg')}}" alt="IMG-BLOG">
                         </a>
                     </div>
@@ -318,7 +319,7 @@
                         </div>
 
                         <h4 class="p-b-12">
-                            <a href="blog-detail.html" class="mtext-101 cl2 hov-cl1 trans-04">
+                            <a href="#news" class="mtext-101 cl2 hov-cl1 trans-04">
                                 Free Medicines Delivery
                             </a>
                         </h4>
@@ -333,7 +334,7 @@
             <div class="col-sm-6 col-md-4 p-b-40">
                 <div class="blog-item">
                     <div class="hov-img0">
-                        <a href="blog-detail.html">
+                        <a href="#news">
                             <img src="{{asset('assets/images/blog-03.jpg')}}" alt="IMG-BLOG">
                         </a>
                     </div>
@@ -349,7 +350,7 @@
                         </div>
 
                         <h4 class="p-b-12">
-                            <a href="blog-detail.html" class="mtext-101 cl2 hov-cl1 trans-04">
+                            <a href="#news" class="mtext-101 cl2 hov-cl1 trans-04">
                                 Ramadhan Discount
                             </a>
                         </h4>

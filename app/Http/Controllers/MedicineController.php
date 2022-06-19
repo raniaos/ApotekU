@@ -18,17 +18,18 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
         $medicines = Medicine::all();
+        $categories = Category::all(); 
         $selected = "all";
+        $search = "none";
 
         if (Auth::user()) {
             if (Auth::user()->is_admin) {
                 return view("medicineadmin.index", compact("medicines", "categories"));
             }
         }
-            
-        return view("medicine.index", compact("medicines", "categories", "selected"));
+
+        return view("medicine.index", compact("medicines", "categories", "selected", "search"));
     }
 
     /**
@@ -116,7 +117,7 @@ class MedicineController extends Controller
         $medicine->category_id = $request->get('category_id');
         $medicine->save();
         
-        return redirect('medadmin')->with('status', 'Medicine has been updated');
+        return redirect('medicines')->with('status', 'Medicine has been updated');
     }
 
     /**
@@ -130,7 +131,7 @@ class MedicineController extends Controller
         try {
             $medicine->delete();
 
-            return redirect('medadmin')->with('status', 'Successfully deleted the medicine');
+            return redirect('medicines')->with('status', 'Successfully deleted the medicine');
         } catch(\PDOException $e) {
             $msg = "Failed to delete medicine. Please make sure to delete other data that connected with this medicine.";
 
@@ -150,8 +151,25 @@ class MedicineController extends Controller
         $medicines = $id != 0 ? Medicine::where('category_id', $id)->get() : Medicine::all();
         $categories = Category::all();
         $selected = $name;
+        $search = "none";
 
-        $view = view('medicine.index', compact('medicines', 'categories', 'selected'));
+        $view = view('medicine.index', compact('medicines', 'categories', 'selected', 'search'));
+        $sections = $view->renderSections();
+
+        return response() -> json(array(
+            'msg' => $sections['content'],
+        ));
+    }
+
+    public function getMedicineByKeyword($keyword) {
+        $medicines = Medicine::where("generic_name", "like", "%".$keyword."%")
+                            ->orWhere("form", "like", "%".$keyword."%")
+                            ->get();
+        $categories = Category::all();
+        $selected = "all";
+        $search = $keyword;
+
+        $view = view('medicine.index', compact('medicines', 'categories', 'selected', 'search'));
         $sections = $view->renderSections();
 
         return response() -> json(array(
@@ -187,12 +205,18 @@ class MedicineController extends Controller
         session()->put('cart',$cart);
         session()->put('totalCart', count($cart));
         
+        $totalPrice = 0;
+        foreach($cart as $id) {
+            $totalPrice += $id['price'] * $id['quantity'];
+        }
+        $formattotal = number_format($totalPrice,0,',','.');
         return response() -> json(array(
             'status' => 'ok',
             'totalCart' => count($cart),
             'name'=>$p->generic_name,
             'price' => $p->price,
             'photo'=>$p->photo,
+            'cart' => $cart
         ), 200);
     }
 
@@ -223,8 +247,16 @@ class MedicineController extends Controller
 
     public function cekcart(){
         $cart=session()->get('cart');
-        // $jum = count($cart);
-        $cart = session('totalCart');
+        $jum = count($cart);
+        // dd($jum);
+        // $cart = session('totalCart');
+        dd($cart);
+        $totalPrice = 0;
+        foreach($cart as $id) {
+            // dd($id['price']);
+            $totalPrice += $id['price'] * $id['quantity'];
+        }
+        dd($totalPrice);
         dd($cart);
     }
 

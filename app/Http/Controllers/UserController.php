@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Address;
+use DB;
 
 class UserController extends Controller
 {
@@ -17,8 +18,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        // $data = 
-        return view("user.index");
+        $data = DB::table('users')->where('is_admin', 0)->get();
+        return view("user.index", compact('data'));
         // dd(User::all());
         // dd($data);
     }
@@ -96,9 +97,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        try {
+            $user->delete();
+
+            return redirect('users')->with('status', 'Successfully deleted the user');
+        } catch(\PDOException $e) {
+            $msg = "Failed to delete user. Please make sure to delete other data that connected with this user.";
+
+            return redirect()->route('users.index')->with('error', $msg);
+        }
     }
 
     public function login(Request $request)

@@ -1,11 +1,22 @@
 @extends('layout.apoteku')
 
 @section('title')
-    Medicines
+    Transactions - Apotek U
 @endsection
 
 @section('content')
-<!-- Product -->
+<div class="container">
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <a href="{{url('/')}}" class="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+
+        <span class="stext-109 cl4">
+            Transactions
+        </span>
+    </div>
+</div>
 <div class="col-lg-10 col-xl-10 m-lr-auto m-b-50 m-t-50">
     @if(session('status'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,15 +37,16 @@
     </div>
     <div class="m-lr-0-xl">
         <div class="wrap-table-shopping-cart" style="border:none;">
-            @foreach($med as $m)
+            @foreach($trans as $m)
             <div style="border: 1px solid #e6e6e6; padding: 30px; margin: 10px 0;">
                 <div style="display:flex; justify-content: space-between; align-items:center;" class="bor12">
                     <div>
                         <p class="stext-110 cl2"><b>Transaction ID &nbsp; &nbsp;</b>{{ $m['tra']['id'] }}</p>
 
-                        <!-- Tampilin kalau punya admin -->
-                        <p class="stext-110 cl2"><b>Customer &nbsp; &nbsp;</b>Neilson Soeratman</p>
-                        <!-- Tampilin kalau punya admin -->
+
+                        @can('only-admin')
+                        <p class="stext-110 cl2"><b>Customer &nbsp; &nbsp;</b>{{$m['tra']->user->name}}</p>
+                        @endcan
                     </div>
                     <?php $date = date("d M Y", strtotime($m['tra']['date'])); ?>
                     <p class="stext-110 cl2">{{ $date }}</p>

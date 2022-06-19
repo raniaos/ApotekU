@@ -20,7 +20,7 @@ class TransactionSeeder extends Seeder
 
         DB::table('transactions')->insert(
             ['date' => '2022-06-13 14:22:00',
-            'total' => '71000',
+            'total' => '81000',
             'user_id' => '2',
             'address_id' => 3
         ]);

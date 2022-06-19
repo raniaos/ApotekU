@@ -1,27 +1,29 @@
 @extends('layout.apoteku')
 
+@section('title')
+    Medicine Detail - Apotek U
+@endsection
+
 @section('content')
-<!-- breadcrumb -->
 <div class="container">
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+        <a href="{{url('/')}}" class="stext-109 cl8 hov-cl1 trans-04">
             Home
             <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a>
 
-        <a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
-            Men
+        <a href="{{url('medicines')}}" class="stext-109 cl8 hov-cl1 trans-04">
+            Medicines
             <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a>
 
         <span class="stext-109 cl4">
-            Lightweight Jacket
+            {{$res->generic_name}} {{$res->form}}
         </span>
     </div>
 </div>
     
 
-<!-- Product Detail -->
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
     <div class="container">
         <div class="row">
@@ -59,7 +61,6 @@
                         {{ $res->form }}
                     </p>
                     
-                    <!--  -->
                     <div class="p-t-33">
 
                         <div class="flex-w flex-r-m p-b-10">
@@ -77,20 +78,11 @@
                                 </div>
 
                                 <input type="hidden" name="idmedicine" value="{{ $res->id }}" class="idmedicine">
-                                <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" location="detail">
                                     Add to cart
                                 </button>
                             </div>
                         </div>	
-                    </div>
-
-                    <!--  -->
-                    <div class="flex-w flex-m p-l-100 p-t-40 respon7">
-                        <div class="flex-m bor9 p-r-10 m-r-11">
-                            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-                                <i class="zmdi zmdi-favorite"></i>
-                            </a>
-                        </div>
                     </div>
             </div>
             </div>
@@ -185,8 +177,7 @@
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/medicines/'.$m->photo)}}">
                             <ul class="product__hover">
-                                <li><a href="#"><img src="{{asset('assets/images/icon/heart.png')}}" alt=""><span>Favourite</span></a></li>
-                                <li><a href="#"><img src="{{asset('assets/images/icon/cart.png')}}" alt=""><span>Add to Cart</span></a></li>
+                            <li class="js-addcart-detail" location="list" generic="{{ $m->generic_name }}" id="{{ $m->id }}"><a><img src="{{ asset('assets/images/icon/cart.png') }}" alt=""><span>Add to Cart</span></a></li>
                                 <li><a href="#modalDetail" onclick="getDetailMedicine({{ $m->id }})" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
                             </ul>
                         </div>

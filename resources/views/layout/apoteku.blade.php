@@ -96,7 +96,7 @@
 								@can('only-admin')
 									<li class="@yield('report-active')">
 										<a href="#">Reports</a>
-										<ul class="sub-menu">
+										<ul class="sub-menu" style=" z-index: 999;">
 											<li><a href="{{ url('transactions') }}">Transactions</a></li>
 											<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
 											<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
@@ -124,16 +124,10 @@
 								<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="{{ $total }}" id="cartTotal">
 									<i class="zmdi zmdi-shopping-cart"></i>
 								</div>
-								<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-									<i class="zmdi zmdi-favorite-outline"></i>
-								</a>
 							@endcan
 						@else
 							<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
 								<i class="zmdi zmdi-shopping-cart"></i>
-							</a>
-							<a href="{{ route('login') }}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-								<i class="zmdi zmdi-favorite-outline"></i>
 							</a>
 						@endauth
 
@@ -142,10 +136,10 @@
 								<li style="padding:0 !important; margin:0 !important;">
 									@auth
 										<i class="zmdi zmdi-account-circle"></i>
-										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
+										<ul class="sub-menu" style="left: -150px; margin-top:10px; z-index: 999;">
 											<li><a href="{{ url('users/'.Auth::user()->id).'/edit' }}">Edit Account</a></li>
 											@can('only-customer')
-												<li><a href="#">My Orders</a></li>
+												<li><a href="{{ url('transactions') }}">My Orders</a></li>
 											@endcan
 											<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 											<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -180,16 +174,10 @@
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="{{ $total }}" id="cartTotal">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
-						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-							<i class="zmdi zmdi-favorite-outline"></i>
-						</a>
 					@endcan
 				@else
 					<a href="{{ route('login') }}" class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
 						<i class="zmdi zmdi-shopping-cart"></i>
-					</a>
-					<a href="{{ route('login') }}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-						<i class="zmdi zmdi-favorite-outline"></i>
 					</a>
 				@endauth
 
@@ -198,10 +186,10 @@
 						<li style="padding:0 !important; margin:0 !important;">
 							@auth
 								<i class="zmdi zmdi-account-circle"></i>
-								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
+								<ul class="sub-menu" style="left: -150px; margin-top:10px; z-index: 999;">
 									<li><a href="{{ url('users/'.Auth::user()->id).'/edit' }}">Edit Account</a></li>
 									@can('only-customer')
-										<li><a href="#">My Orders</a></li>
+										<li><a href="{{ url('transactions') }}">My Orders</a></li>
 									@endcan
 									<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 									<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -266,7 +254,7 @@
 					@can('only-admin')
 						<li class="@yield('report-active')">
 							<a href="#">Reports</a>
-							<ul class="sub-menu">
+							<ul class="sub-menu" style=" z-index: 999;">
 								<li><a href="{{ url('transactions') }}">Transactions</a></li>
 								<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
 								<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
@@ -388,7 +376,7 @@
 			</div>
 
 				<p class="stext-107 cl6 txt-center">
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Apotek U</p>
+					Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Apotek U</p>
 			</div>
 		</div>
 	</footer>
@@ -475,11 +463,23 @@
 
 		/*---------------------------------------------*/
 
-		$('.js-addcart-detail').on('click', function(){
-			var medicineName = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-			var id = $(this).parent().parent().parent().parent().find('.idmedicine').val();
-			var qty = $(this).parent().parent().parent().parent().find('.qtyMedicine').val();
-			console.log(id);
+		$(document).on('click', '.js-addcart-detail', function(){
+			var location = $(this).attr("location");
+
+			var medicineName = "";
+			var id = 0;
+			var qty = 0;
+			if (location == "detail"){
+				medicineName = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+				id = $(this).parent().parent().parent().parent().find('.idmedicine').val();
+				qty = $(this).parent().parent().parent().parent().find('.qtyMedicine').val();
+			}
+			else {
+				medicineName = $(this).attr("generic");
+				id = $(this).attr("id");
+				qty = 1;
+			}
+
 			console.log(qty);
 			var token_name = $('input[name="_token"]').val();
 			$.ajax({
@@ -492,15 +492,21 @@
 						var total = data.totalCart;
 						var name = data.name;
 						var price = data.price;
-						console.log(price);
 						var photo = data.photo;
 						$("div.js-show-cart").attr('data-notify', total);
-						$("#ulCartBar").append(`<li class='header-cart-item flex-w flex-t m-b-12'><div class='header-cart-item-img'><img src='{{asset("assets/images/medicines/`+photo+`")}}' alt='IMG'></div><div class='header-cart-item-txt p-t-8'><a href='#' class='header-cart-item-name m-b-18 hov-cl1 trans-04'>`+name+`</a><span class='header-cart-item-info'>`+qty+` x Rp` + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+`,-</span></div></li>`);
 						var tot = parseInt($('#totalCartBar').attr('total'));
 						t = qty*price;
 						totalPrice = tot + qty * price;
 						$('#totalCartBar').attr('total', totalPrice);
 						$('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");
+						var carttt = data.cart;
+						$('#ulCartBar').html("");
+						$.each(carttt, function(id, isiArray) {
+							var p = isiArray['photo'];
+							var text = `<li class="header-cart-item flex-w flex-t m-b-12"><div class="header-cart-item-img">
+							<img src="{{asset('assets/images/medicines/`+ p +`')}}" alt="IMG"></div><div class="header-cart-item-txt p-t-8"><a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">`+isiArray['name']+`</a><span class="header-cart-item-info">`+isiArray['quantity']+` x Rp`+ isiArray['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+`,-</span></div></li>`;
+							$("#ulCartBar").append(text);
+						});
 					}
 				}
 			});

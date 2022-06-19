@@ -20,18 +20,24 @@ class TransactionController extends Controller
     {
         if (Auth::user()) {
             if (Auth::user()->is_admin) {
-                $med = Transaction::orderBy('date','desc')->get();
-                view("transaction.index", compact('med'));
-            } else {
-                $user = Auth::user()->id;
-                $data = Transaction::where('user_id', $user)->orderBy('date','desc')->get();
-                $med = array();
+                $data = Transaction::orderBy('date','desc')->get();
+                $trans = array();
                 foreach ($data as $d) {
                     $dataa = $d->medicines;
                     $totalData = count($dataa)-1;
-                    array_push($med, array('tra' => $d, 'med' => $dataa, 'other' => $totalData));
+                    array_push($trans, array('tra' => $d, 'med' => $dataa, 'other' => $totalData));
                 }
-                return view("transaction.index", compact('med'));
+                return view("transaction.index", compact('trans'));
+            } else {
+                $user = Auth::user()->id;
+                $data = Transaction::where('user_id', $user)->orderBy('date','desc')->get();
+                $trans = array();
+                foreach ($data as $d) {
+                    $dataa = $d->medicines;
+                    $totalData = count($dataa)-1;
+                    array_push($trans, array('tra' => $d, 'med' => $dataa, 'other' => $totalData));
+                }
+                return view("transaction.index", compact('trans'));
             }
         }
     }

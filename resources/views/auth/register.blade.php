@@ -1,7 +1,7 @@
 @extends('layout.apoteku')
 
 @section('title')
-    Register
+    Register - Apotek U
 @endsection
 
 @section('content')
