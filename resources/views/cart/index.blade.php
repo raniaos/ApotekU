@@ -18,7 +18,6 @@
         </span>
     </div>
 </div>
-    
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <span>{{ session('error') }}</span>
@@ -219,4 +218,4 @@ header-v4 how-shadow1
 
 @section('medicine-active')
 active-menu
-@endsection{{  }}
+@endsection

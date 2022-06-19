@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Medicine;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class TransactionController extends Controller
@@ -17,15 +18,22 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $user = Auth::user()->id;
-        $data = Transaction::where('user_id', $user)->orderBy('date','desc')->get();
-        $med = array();
-        foreach ($data as $d) {
-            $dataa = $d->medicines;
-            $totalData = count($dataa)-1;
-            array_push($med, array('tra' => $d, 'med' => $dataa, 'other' => $totalData));
+        if (Auth::user()) {
+            if (Auth::user()->is_admin) {
+                $med = Transaction::orderBy('date','desc')->get();
+                view("transaction.index", compact('med'));
+            } else {
+                $user = Auth::user()->id;
+                $data = Transaction::where('user_id', $user)->orderBy('date','desc')->get();
+                $med = array();
+                foreach ($data as $d) {
+                    $dataa = $d->medicines;
+                    $totalData = count($dataa)-1;
+                    array_push($med, array('tra' => $d, 'med' => $dataa, 'other' => $totalData));
+                }
+                return view("transaction.index", compact('med'));
+            }
         }
-        return view("transaction.index", compact('med'));
     }
 
     /**
@@ -41,32 +49,38 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in {{ storage. }}
      *
-     * @param  \Illuminate\Http\Request  {{ $request }}
+     * @param  \Illuminate\Http\Request  {{ $request }}{{  }}
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $address = $request->get('address_id');
-        if($address != 0) {
-            $cart = session()->get('cart');
-            $user = Auth::user();
-            $t = new Transaction;
-            $t->address_id = $address;
-            $t->user_id = $user->id;
-            $t->date = Carbon::now()->toDateTimeString();
-            $t->save();
+        $cart = session()->get('cart');
+        if ($cart != null) {
+            $address = $request->get('address_id');
+            if($address != 0) {
+                $user = Auth::user();
+                $t = new Transaction;
+                $t->address_id = $address;
+                $t->user_id = $user->id;
+                $t->date = Carbon::now()->toDateTimeString();
+                $t->save();
 
-            $total = $t->insertMedicines($cart, $user);
-            $t->total = $total;
-            $t->save();
+                $total = $t->insertMedicines($cart, $user);
+                $t->total = $total;
+                $t->save();
 
-            session()->forget('cart');
-            return redirect()->route('transactions.index')
-                ->with('status','New transaction successful!');
+                session()->forget('cart');
+                return redirect()->route('transactions.index')
+                    ->with('status','New transaction successful!');
+            }
+            else {
+                return redirect()->back()
+                    ->with('error','Choose address first!');
+            }
         }
         else {
             return redirect()->back()
-                ->with('error','Choose address first!');
+                ->with('error','Cart is empty.');
         }
         
     }
@@ -80,12 +94,14 @@ class TransactionController extends Controller
     public function show(Transaction $transaction)
     {
         $res = Transaction::where('id','=',$transaction->id)->get();
-        $med = array();
+        $data = array();
         // dd($res);
-        $data = $res->medicines;
-        array_push($med, array('tra' => $d, 'med' => $data));
-        dd($med);
-        return view("transaction.detail",compact('transaction'));
+        $address = DB::table('addresses')->where('id','=',$res[0]->address_id)->get();
+        // dd($address);
+        array_push($data,['transaction'=>$res[0],'address'=>$address[0]]);
+        // dd($data[0]['transaction']->user);
+        // dd($data);
+        return view("transaction.detail",compact('data'));
     }
 
     /**
@@ -154,4 +170,4 @@ class TransactionController extends Controller
             'msg' => view('medicine.getDetail', compact('data', 'category'))->render()
         ), 200);
     }
-}{{  }}
+}

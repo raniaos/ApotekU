@@ -23,12 +23,12 @@ class MedicineController extends Controller
         $selected = "all";
 
         if (Auth::user()) {
-            if (Auth::user()->is_admin)
-{
+            if (Auth::user()->is_admin) {
                 return view("medicineadmin.index", compact("medicines", "categories"));
-            }        } else {
-            return view("medicine.index", compact("medicines", "categories", "selected"));
+            }
         }
+            
+        return view("medicine.index", compact("medicines", "categories", "selected"));
     }
 
     /**
@@ -76,7 +76,7 @@ class MedicineController extends Controller
     {
         $res=$medicine;
         $id = $medicine->category_id;
-        $obatSerupa=DB::table('medicines')
+        $obatSerupa= DB::table('medicines')
             ->where("category_id","=",$id)
             ->get();
         
@@ -163,6 +163,7 @@ class MedicineController extends Controller
         $id = $request->get('id');
         $data = Medicine::find($id);
         $category = Category::all();
+
         return response() -> json(array(
             'status' => 'ok',
             'msg' => view('medicine.getDetail', compact('data', 'category'))->render()
@@ -177,13 +178,7 @@ class MedicineController extends Controller
         $cart=session()->get('cart');
         if (!isset($cart[$id])){
             $cart[$id]=[
-                "id"=>$id,
-                "name"=>$p->generic_name,
-                "form"=>$p->form,
-                "quantity"=>$qty,
-                "price"=>$p->price,
-                "photo"=>$p->photo,
-                "category"=>$p->category->name
+                "id"=>$id, "name"=>$p->generic_name, "form"=>$p->form, "quantity"=>$qty,"price"=>$p->price, "photo"=>$p->photo, "category"=>$p->category->name
             ];
         }
         else{
@@ -194,7 +189,10 @@ class MedicineController extends Controller
         
         return response() -> json(array(
             'status' => 'ok',
-            'totalCart' => count($cart)
+            'totalCart' => count($cart),
+            'name'=>$p->generic_name,
+            'price' => $p->price,
+            'photo'=>$p->photo,
         ), 200);
     }
 

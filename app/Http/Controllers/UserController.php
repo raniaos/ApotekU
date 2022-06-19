@@ -17,15 +17,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user()->id;
-        $data = User::where('id', $user)->get();
-        // return view("users.edit", compact('data'));
+        // $data = 
+        return view("user.index");
         // dd(User::all());
-        dd($data);
+        // dd($data);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a n{{ ew resource. }}
      *
      * @return \Illuminate\Http\Response
      */
@@ -64,10 +63,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        
         $res = $user;
         $address = Address::all()->where('user_id','=',$user->id);
         return view("user.edit",compact('res','address'));
+        // return view("user.edit");
     }
 
     /**
@@ -85,10 +84,10 @@ class UserController extends Controller
             $user->password = Hash::make($request->get('password'));
             
             $user->save();
-
+            return redirect('users/'.Auth::user()->id.'/edit')->with('status', 'your account successfully updated!');
         }
         else 
-            return redirect()->with('error', 'Password must be same with repeat password');
+            return redirect('users/'.Auth::user()->id.'/edit')->with('error', 'Password must be same with repeat password');
     }
 
     /**

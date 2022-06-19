@@ -16,9 +16,7 @@
         <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
             Transaction
             <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-        </a>
-
-        <span class="stext-109 cl4">
+        </a> <span class="stext-109 cl4">
             Detail
         </span>
     </div>
@@ -42,7 +40,7 @@
 
                 <div class="size-209">
                     <span class="mtext-110 cl2">
-                        100
+                        {{ $data[0]['transaction']->id }}
                     </span>
                 </div>
             </div>
@@ -53,10 +51,10 @@
                         Date:
                     </span>
                 </div>
-
+                <?php $date = date("d M Y", strtotime($data[0]['transaction']->date)); ?>
                 <div class="size-209">
                     <span class="mtext-110 cl2">
-                        12 Jan 2020
+                        {{ $date }}
                     </span>
                 </div>
             </div>
@@ -70,9 +68,9 @@
 
                 <div class="size-209 p-r-18 p-r-0-sm w-full-ssm">
                     <p class="stext-111 cl6 p-t-2">
-                        Name
+                        {{ $data[0]['transaction']->user->name }}
                         <br>
-                        email@mail.com
+                        {{ $data[0]['transaction']->user->email }}
                     </p>
                     
                     <div class="p-t-15">
@@ -80,11 +78,11 @@
                             Address
                         </span>
                         <p class="stext-111 cl6 p-t-2">
-                            Address
+                            {{ $data[0]['address']->address }}
                             <br>
-                            Kecamatan, Kota
+                            {{ $data[0]['address']->districts }}, {{ $data[0]['address']->city }}
                             <br>
-                            Provinsi Kode Pos
+                            {{ $data[0]['address']->province }} {{ $data[0]['address']->postal_code }}
                         </p>
                     </div>
                 </div>
@@ -99,7 +97,7 @@
 
                 <div class="size-209 p-t-1">
                     <span class="mtext-110 cl2">
-                        Rp10000
+                        Rp {{ number_format($data[0]['transaction']->total,0,',','.') }},-
                     </span>
                 </div>
             </div>
@@ -116,38 +114,23 @@
                             <th class="column-4">Quantity</th>
                             <th class="column-5">Total</th>
                         </tr>
-
+                        @foreach($data[0]['transaction']->medicines as $m)
                         <tr class="table_row">
                             <td class="column-1">
                                 <div class="how-itemcart1">
-                                    <img src="{{asset('assets/images/item-cart-04.jpg')}}" alt="IMG">
+                                    <img src="{{asset('assets/images/medicines/'.$m->photo)}}" alt="IMG">
                                 </div>
                             </td>
                             <td class="column-2">
-                                Generic Name<br>
-                                Form<br>
-                                Category Name
+                                {{ $m->generic_name }}<br>
+                                {{ $m->form }}<br>
+                                {{ $m->category->name }}
                             </td>
-                            <td class="column-3">Rp1000</td>
-                            <td class="column-4">x3</td>
-                            <td class="column-5">Rp3000</td>
+                            <td class="column-3">Rp {{ number_format($m->price,0,',','.')}},-</td>
+                            <td class="column-4">{{ $m->pivot->quantity}}</td>
+                            <td class="column-5">Rp {{ number_format($m->price * $m->pivot->quantity,0,',','.')}},-</td>
                         </tr>
-
-                        <tr class="table_row">
-                            <td class="column-1">
-                                <div class="how-itemcart1">
-                                    <img src="{{asset('assets/images/item-cart-04.jpg')}}" alt="IMG">
-                                </div>
-                            </td>
-                            <td class="column-2">
-                                Generic Name<br>
-                                Form<br>
-                                Category Name
-                            </td>
-                            <td class="column-3">Rp1000</td>
-                            <td class="column-4">x3</td>
-                            <td class="column-5">Rp3000</td>
-                        </tr>
+                        @endforeach
                     </table>
                 </div>
 
@@ -157,7 +140,7 @@
                     </div>
 
                     <div class="flex-c-m stext-101 cl2 size-119  m-tb-10" style="justify-content:end;">
-                        <b>Rp6000</b>
+                        <b>Rp {{ number_format($data[0]['transaction']->total,0,',','.')}},- </b>
                     </div>
                 </div>
             </div>

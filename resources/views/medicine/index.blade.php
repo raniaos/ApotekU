@@ -338,7 +338,7 @@
             url: '{{ route("medicines.getDetailMedicine") }}',
             data: { '_token': '<?php echo csrf_token() ?>', 'id':id},
             success: function(data){
-                $('.contentDetail').html(data.msg)
+                $('.contentDetail').html(data.msg);
             }
         })
     }

@@ -77,7 +77,7 @@
 							</li>
 
 							@auth
-								@can('edit-delete-permission')
+								@can('only-admin')
 									<li class="@yield('category-active')">
 										<a href="{{url('categories')}}">Categories</a>
 									</li>
@@ -85,14 +85,24 @@
 							@endauth
 
 							@auth
-								<li class="@yield('report-active')">
-									<a href="#">Reports</a>
-									<ul class="sub-menu">
-										<li><a href="{{ url('transactions') }}">Transactions</a></li>
-										<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
-										<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
-									</ul>
-								</li>
+								@can('only-admin')
+									<li class="@yield('user-active')">
+										<a href="{{url('users')}}">Users</a>
+									</li>
+								@endcan
+							@endauth
+
+							@auth
+								@can('only-admin')
+									<li class="@yield('report-active')">
+										<a href="#">Reports</a>
+										<ul class="sub-menu">
+											<li><a href="{{ url('transactions') }}">Transactions</a></li>
+											<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
+											<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
+										</ul>
+									</li>
+								@endcan
 							@endauth
 
 							<li class="@yield('about-active')">
@@ -103,9 +113,6 @@
 
 					<!-- Icon header -->
 					<div class="wrap-icon-header flex-w flex-r-m">
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-							<i class="zmdi zmdi-search"></i>
-						</div>
 
 						<?php $total=0; ?>
 						@if(session('cart'))
@@ -137,7 +144,9 @@
 										<i class="zmdi zmdi-account-circle"></i>
 										<ul class="sub-menu" style="left: -150px; margin-top:10px;">
 											<li><a href="{{ url('users/'.Auth::user()->id).'/edit' }}">Edit Account</a></li>
-											<li><a href="#">My Orders</a></li>
+											@can('only-customer')
+												<li><a href="#">My Orders</a></li>
+											@endcan
 											<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 											<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 												@csrf
@@ -165,9 +174,6 @@
 
 			<!-- Icon header -->
 			<div class="wrap-icon-header flex-w flex-r-m m-r-15">
-				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
-					<i class="zmdi zmdi-search"></i>
-				</div>
 
 				@auth
 					@can('only-customer')
@@ -194,7 +200,9 @@
 								<i class="zmdi zmdi-account-circle"></i>
 								<ul class="sub-menu" style="left: -150px; margin-top:10px;">
 									<li><a href="{{ url('users/'.Auth::user()->id).'/edit' }}">Edit Account</a></li>
-									<li><a href="#">My Orders</a></li>
+									@can('only-customer')
+										<li><a href="#">My Orders</a></li>
+									@endcan
 									<li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
 									<form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
 										@csrf
@@ -239,7 +247,7 @@
 				</li>
 
 				@auth
-					@can('edit-delete-permission')
+					@can('only-admin')
 						<li class="@yield('category-active')">
 							<a href="{{url('categories')}}">Categories</a>
 						</li>
@@ -247,14 +255,24 @@
 				@endauth
 
 				@auth
-					<li class="@yield('report-active')">
-						<a href="#">Reports</a>
-						<ul class="sub-menu">
-							<li><a href="{{ url('transactions') }}">Transactions</a></li>
-							<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
-							<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
-						</ul>
-					</li>
+					@can('only-admin')
+						<li class="@yield('user-active')">
+							<a href="{{url('users')}}">Users</a>
+						</li>
+					@endcan
+				@endauth
+
+				@auth
+					@can('only-admin')
+						<li class="@yield('report-active')">
+							<a href="#">Reports</a>
+							<ul class="sub-menu">
+								<li><a href="{{ url('transactions') }}">Transactions</a></li>
+								<li><a href="{{url('reports/bestselling')}}">Best Selling Medicines</a></li>
+								<li><a href="{{url('reports/bestpurchasing')}}">Best Purchasing Customers</a></li>
+							</ul>
+						</li>
+					@endcan
 				@endauth
 
 				<li class="@yield('about-active')">
@@ -263,21 +281,6 @@
 			</ul>
 		</div>
 
-		<!-- Modal Search -->
-		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-			<div class="container-search-header">
-				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-					<img src="{{asset('assets/images/icons/icon-close2.png')}}" alt="CLOSE">
-				</button>
-
-				<form class="wrap-search-header flex-w p-l-15" action="product.html">
-					<button class="flex-c-m trans-04">
-						<i class="zmdi zmdi-search"></i>
-					</button>
-					<input class="plh3" type="text" name="search" placeholder="Search...">
-				</form>
-			</div>
-		</div>
 	</header>
 
 	<!-- Cart -->
@@ -294,8 +297,8 @@
 				</div>
 			</div>
 			
-			<div class="header-cart-content flex-w js-pscroll">
-				<ul class="header-cart-wrapitem w-full">
+			<div class="header-cart-content flex-w js-pscroll" id="cartBar">
+				<ul class="header-cart-wrapitem w-full" id="ulCartBar">
 					<?php
                         $totalPrice=0;
                     ?>
@@ -323,9 +326,8 @@
                     @endif
 
 				</ul>
-				
 				<div class="w-full">
-					<div class="header-cart-total w-full p-tb-40">
+					<div class="header-cart-total w-full p-tb-40" id="totalCartBar" total="{{ $totalPrice }}">
 						Total: Rp{{ number_format($totalPrice,0,',','.') }},-
 					</div>
 
@@ -346,70 +348,33 @@
 	<!-- Footer -->
 	<footer class="bg3 p-t-75 p-b-32">
 		<div class="container">
-			<div class="row">
+			<div class="row" style="justify-content: space-evenly;">
 				<div class="col-sm-6 col-lg-3 p-b-50">
 					<h4 class="stext-301 cl0 p-b-30">
-						Categories
+						Menu
 					</h4>
 
 					<ul>
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Women
+							<a href="{{url('/')}}" class="stext-107 cl7 hov-cl1 trans-04">
+								Home
 							</a>
 						</li>
 
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Men
+							<a href="{{url('medicines')}}" class="stext-107 cl7 hov-cl1 trans-04">
+								Medicines
 							</a>
 						</li>
 
 						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Shoes
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Watches
+							<a href="{{url('about')}}" class="stext-107 cl7 hov-cl1 trans-04">
+								About
 							</a>
 						</li>
 					</ul>
 				</div>
 
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						Help
-					</h4>
-
-					<ul>
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Track Order
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Returns 
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								Shipping
-							</a>
-						</li>
-
-						<li class="p-b-10">
-							<a href="#" class="stext-107 cl7 hov-cl1 trans-04">
-								FAQs
-							</a>
-						</li>
-					</ul>
-				</div>
 
 				<div class="col-sm-6 col-lg-3 p-b-50">
 					<h4 class="stext-301 cl0 p-b-30">
@@ -417,74 +382,13 @@
 					</h4>
 
 					<p class="stext-107 cl7 size-201">
-						Any questions? Let us know in store at 8th floor, 379 Hudson St, New York, NY 10018 or call us on (+1) 96 716 6879
+						Any questions? Let Us Know! Call us on +01234567 or email us on apoteku@mail.com
 					</p>
-
-					<div class="p-t-27">
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-facebook"></i>
-						</a>
-
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-instagram"></i>
-						</a>
-
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-pinterest-p"></i>
-						</a>
-					</div>
-				</div>
-
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						Newsletter
-					</h4>
-
-					<form>
-						<div class="wrap-input1 w-full p-b-4">
-							<input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com">
-							<div class="focus-input1 trans-04"></div>
-						</div>
-
-						<div class="p-t-18">
-							<button class="flex-c-m stext-101 cl0 size-103 bg1 bor1 hov-btn2 p-lr-15 trans-04">
-								Subscribe
-							</button>
-						</div>
-					</form>
 				</div>
 			</div>
 
-			<div class="p-t-40">
-				<div class="flex-c-m flex-w p-b-18">
-					<a href="#" class="m-all-1">
-						<img src="{{asset('assets/images/icons/icon-pay-01.png')}}" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="{{asset('assets/images/icons/icon-pay-02.png')}}" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="{{asset('assets/images/icons/icon-pay-03.png')}}" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="{{asset('assets/images/icons/icon-pay-04.png')}}" alt="ICON-PAY">
-					</a>
-
-					<a href="#" class="m-all-1">
-						<img src="{{asset('assets/images/icons/icon-pay-05.png')}}" alt="ICON-PAY">
-					</a>
-				</div>
-
 				<p class="stext-107 cl6 txt-center">
-					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>. 
-Downloaded from <a href="https://themeslab.org/" target="_blank">Themeslab</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
-				</p>
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Apotek U</p>
 			</div>
 		</div>
 	</footer>
@@ -585,8 +489,18 @@ Downloaded from <a href="https://themeslab.org/" target="_blank">Themeslab</a>
 				success: function(data){
 					if (data.status == 'ok'){
 						swal(medicineName, "is added to cart !", "success");
-						$total = data.totalCart;
-						$("div.js-show-cart").attr('data-notify', $total);
+						var total = data.totalCart;
+						var name = data.name;
+						var price = data.price;
+						console.log(price);
+						var photo = data.photo;
+						$("div.js-show-cart").attr('data-notify', total);
+						$("#ulCartBar").append(`<li class='header-cart-item flex-w flex-t m-b-12'><div class='header-cart-item-img'><img src='{{asset("assets/images/medicines/`+photo+`")}}' alt='IMG'></div><div class='header-cart-item-txt p-t-8'><a href='#' class='header-cart-item-name m-b-18 hov-cl1 trans-04'>`+name+`</a><span class='header-cart-item-info'>`+qty+` x Rp` + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+`,-</span></div></li>`);
+						var tot = parseInt($('#totalCartBar').attr('total'));
+						t = qty*price;
+						totalPrice = tot + qty * price;
+						$('#totalCartBar').attr('total', totalPrice);
+						$('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");
 					}
 				}
 			});
