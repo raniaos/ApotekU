@@ -26,7 +26,7 @@
     <section class="bg0 p-b-116">
 		<div class="container">
             <div class="bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                <form method="POST" action="{{ url('medicines/'.$med->id) }}">
+                <form method="POST" action="{{ url('medicines/'.$med->id) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
@@ -62,11 +62,11 @@
                     </div>
                     <div class="m-b-10 how-pos4-parent" style="display:flex; align-items:center;">
                         <p class="p-r-20 m-b-0" style="width: 120px;">Faskes 2</p>
-                        <input class="stext-111 cl2 plh3 p-l-62 p-r-30" type="checkbox" name="faskes2" {{ ($med->faskes1 == 1) ? 'checked' : '' }}>
+                        <input class="stext-111 cl2 plh3 p-l-62 p-r-30" type="checkbox" name="faskes2" {{ ($med->faskes2 == 1) ? 'checked' : '' }}>
                     </div>
                     <div class="m-b-20 how-pos4-parent" style="display:flex; align-items:center;">
                         <p class="p-r-20 m-b-0" style="width: 120px;">Faskes 3</p>
-                        <input class="stext-111 cl2 plh3 p-l-62 p-r-30" type="checkbox" name="faskes3" {{ ($med->faskes1 == 1) ? 'checked' : '' }}>
+                        <input class="stext-111 cl2 plh3 p-l-62 p-r-30" type="checkbox" name="faskes3" {{ ($med->faskes3 == 1) ? 'checked' : '' }}>
                     </div>
                     <div class="m-b-20 how-pos4-parent" style="display:flex; align-items:center;">
                         <p class="p-r-20 m-b-0" style="width: 120px;">Category</p>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="m-b-40 how-pos4-parent" style="display:flex; align-items:center;">
                         <p class="p-r-20 m-b-0" style="width: 120px;">Image</p>
-                        <input class="stext-111 cl2 plh3" type="file" name="email">
+                        <input class="stext-111 cl2 plh3" type="file" name="image">
                     </div>
 
                     <button type="submit" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">

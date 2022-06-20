@@ -8,6 +8,7 @@ use DB;
 use App\Category;
 use App\Address;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class MedicineController extends Controller
 {
@@ -61,9 +62,18 @@ class MedicineController extends Controller
         $data->faskes2 = $request->get('faskes2') == 'on' ? 1 : 0;
         $data->faskes3 = $request->get('faskes3') == 'on' ? 1 : 0;
         $data->category_id = $request->get('category_id');
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imgFolder = "assets/images/medicines";
+            $imgFile = strtolower(str_replace(' ', '', ($data->generic_name.$data->form))).'.'.$file->getClientOriginalExtension();
+            $file->move($imgFolder, $imgFile);
+            $data->photo = $imgFile;
+        }
+
         $data->save();
 
-        return redirect('medadmin')
+        return redirect('medicines')
             ->with('status','Medicine has been created');
     }
 
@@ -115,6 +125,16 @@ class MedicineController extends Controller
         $medicine->faskes2 = $request->get('faskes2') == 'on' ? 1 : 0;
         $medicine->faskes3 = $request->get('faskes3') == 'on' ? 1 : 0;
         $medicine->category_id = $request->get('category_id');
+
+        if ($request->hasFile('image')) {
+            File::delete("assets/images/medicines/".$medicine->photo);
+            $file = $request->file('image');
+            $imgFolder = "assets/images/medicines";
+            $imgFile = strtolower(str_replace(' ', '', ($medicine->generic_name.$medicine->form))).'.'.$file->getClientOriginalExtension();
+            $file->move($imgFolder, $imgFile);
+            $medicine->photo = $imgFile;
+        }
+
         $medicine->save();
         
         return redirect('medicines')->with('status', 'Medicine has been updated');
