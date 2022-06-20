@@ -126,7 +126,6 @@
 @endsection
 
 @section('javascript-extra')
-
 <script>
     function getDetailMedicine(id) {
         $.ajax({
@@ -165,7 +164,6 @@
         }
     });
 </script>
-
 @endsection
 
 @section('header-class')
