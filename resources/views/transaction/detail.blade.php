@@ -153,6 +153,6 @@
 header-v4 how-shadow1
 @endsection
 
-@section('medicine-active')
+@section('report-active')
 active-menu
 @endsection
