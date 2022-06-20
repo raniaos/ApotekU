@@ -499,7 +499,6 @@
 							var photo = data.photo;
 							$("div.js-show-cart").attr('data-notify', total);
 							var tot = parseInt($('#totalCartBar').attr('total'));
-							t = qty*price;
 							totalPrice = tot + qty * price;
 							$('#totalCartBar').attr('total', totalPrice);
 							$('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");

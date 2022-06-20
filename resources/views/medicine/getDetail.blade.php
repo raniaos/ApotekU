@@ -97,7 +97,6 @@
         var qty = $("#qtyMedicine").val();
 
         var token_name = $('input[name="_token"]').val();
-
         if (token_name == undefined) {
             window.location.href = "{{ route('login')}}";
         } else {
@@ -114,7 +113,6 @@
                         var photo = data.photo;
                         $("div.js-show-cart").attr('data-notify', total);
                         var tot = parseInt($('#totalCartBar').attr('total'));
-                        t = qty*price;
                         totalPrice = tot + qty * price;
                         $('#totalCartBar').attr('total', totalPrice);
                         $('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");
