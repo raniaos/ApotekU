@@ -32,16 +32,17 @@
                         @enderror
                     </div>
 
-                    <div class="m-b-30 how-pos4-parent" style="display:flex; gap:20px;">
+                    <div class="m-b-30 how-pos4-parent" style="display:grid; gap:20px; grid-template-columns:1fr 1fr;">
                         <input class="bor8 stext-111 cl2 plh3 size-116 p-l-30 p-r-30 form-control @error('password') is-invalid @enderror" placeholder="Password" id="password" type="password" name="password" required autocomplete="new-password">
-
+                            
                         <input class="bor8 stext-111 cl2 plh3 size-116 p-l-30 p-r-30 form-control" placeholder="Repeat Password" id="password" type="password" name="password_confirmation" required autocomplete="new-password">
+                        @error('password')
+                            <span class="invalid-feedback" role="alert" style="grid-column:span 2;">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                    
 
                     <button type="submit" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         Register

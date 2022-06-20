@@ -25,6 +25,13 @@
 </div>
 @endif
 
+@if(session('no_change'))
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <span>{{ session('no_change') }}</span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
 @if(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <span>{{ session('error') }}</span>
@@ -41,21 +48,31 @@
                     @method('PUT')
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Edit Account
-                    </h4>
+                    
                     <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-30 p-r-30" type="text" name="name" placeholder="name" value="{{ $res->name }}">
-                    </div>
-
-                    <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-30 p-r-30" type="email" name="email" placeholder="email" value="{{ $res->email }}">
-                    </div>
-
-                    <div class="m-b-30 how-pos4-parent" style="display:flex; gap: 20px;">
-                        <input class="bor8 stext-111 cl2 plh3 size-116 p-l-30 p-r-30" type="password" name="password" placeholder="Password" value="" required>
-                        <input class="bor8 stext-111 cl2 plh3 size-116 p-l-30 p-r-30" type="password" name="repeat_password" placeholder="Repeat Password" value="" required>
-                        
-                        @error('password')
+                        <input class="stext-111 cl2 plh3 size-116 p-l-30 p-r-30 form-control @error('name') is-invalid @enderror" id="text" type="name" name="name" value="{{ old('name') != '' ? old('name') : $res->name }}" required autocomplete="name" autofocus placeholder="Name">
+                        @error('name')
                             <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="bor8 m-b-20 how-pos4-parent">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-30 p-r-30 form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') != '' ? old('email') : $res->email }}" required autocomplete="email" placeholder="Email">
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="m-b-30 how-pos4-parent" style="display:grid; gap:20px; grid-template-columns:1fr 1fr;">
+                        <input class="bor8 stext-111 cl2 plh3 size-116 p-l-30 p-r-30 form-control @error('password') is-invalid @enderror" placeholder="Password" id="password" type="password" name="password" autocomplete="new-password">
+                            
+                        <input class="bor8 stext-111 cl2 plh3 size-116 p-l-30 p-r-30 form-control" placeholder="Repeat Password" id="password" type="password" name="password_confirmation" autocomplete="new-password">
+                        @error('password')
+                            <span class="invalid-feedback" role="alert" style="grid-column:span 2;">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
@@ -123,8 +140,4 @@
 
 @section('header-class')
 header-v4 how-shadow1
-@endsection
-
-@section('medicine-active')
-active-menu
 @endsection

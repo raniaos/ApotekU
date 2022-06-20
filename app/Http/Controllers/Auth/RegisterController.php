@@ -51,25 +51,12 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        // return Validator::make($data, [
-        //     'name' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
-        // ]);
-
-        // $a = Validator::make($data, [
-        //     'name' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        //     'password' => ['required', 'string', 'min:8'],
-        //     'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
-        // ]);
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'password_confirmation' => ['required', 'string', 'min:8', 'same:password'],
         ]);
-        // dd($a);
     }
 
     /**
@@ -89,22 +76,16 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $validated = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email:dns|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            // 'password_confirmation' => 'required|string|min:8|same:password',
         ]);
 
-        dd($validated);
-        // if ($validated->fails()) {
-        //     return back()->withInput()->withErrors($validated->message());
-        // }
-
-        $user = $this->create($request->all());
+        $user = $this->create($validated);
 
         $this->guard()->login($user);
 
-        return redirect('/home');
+        return redirect($this->redirectPath());
     }
 }

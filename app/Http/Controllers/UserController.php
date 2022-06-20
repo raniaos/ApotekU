@@ -79,16 +79,47 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if ($request->get('password') == $request->get('repeat_password')) {
-            $user->name = $request->get('name');
-            $user->email = $request->get('email');
-            $user->password = Hash::make($request->get('password'));
-            
-            $user->save();
-            return redirect('users/'.Auth::user()->id.'/edit')->with('status', 'your account successfully updated!');
+        if ($request->get('email') == $user->email)
+        {
+            $validated = $request->validate([
+                'name' => 'string|max:255',
+                'password' => 'nullable|string|min:8|confirmed',
+            ]);
+        } else {
+            $validated = $request->validate([
+                'name' => 'string|max:255',
+                'email' => 'string|email|max:255|unique:users',
+                'password' => 'nullable|string|min:8|confirmed',
+            ]);
         }
-        else 
-            return redirect('users/'.Auth::user()->id.'/edit')->with('error', 'Password must be same with repeat password');
+
+        $change = false;
+        if ($validated['name'] != $user->name) {
+            $change = true;
+        }
+        
+        $user->name = $validated['name'];
+        if (isset($validated['email'])) {
+            if ($validated['email'] != $user->email) {
+                $change = true;
+            }
+            $user->email = $validated['email'];
+        }
+
+        if ($validated['password'] != null) {
+            if (Hash::check($validated['password'], $user->password) == false) {
+                $change = true;
+            }
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+    
+        if ($change) {
+            return redirect('users/'.Auth::user()->id.'/edit')->with('status', 'Your account successfully updated!');
+        }
+
+        return redirect('users/'.Auth::user()->id.'/edit')->with('no_change', 'There is no change');
     }
 
     /**
