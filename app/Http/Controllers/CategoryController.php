@@ -14,6 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('only-admin');
         $category = Category::all();
         return view("category.index", compact("category"));
     }
@@ -25,6 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $this->authorize('only-admin');
         return view("category.create");
     }
 
@@ -36,6 +38,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('only-admin');
         $data = new Category();
         $data->name = $request->get('name');
         $data->description = $request->get('description');
@@ -63,6 +66,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        $this->authorize('only-admin');
         $res = $category;
         return view("category.edit", compact('res'));
     }
@@ -76,6 +80,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $this->authorize('only-admin');
         $category->name = $request->get('name');
         $category->description = $request->get('description');
         $category->save();
@@ -91,6 +96,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $this->authorize('only-admin');
         try {
             $category->delete();
 

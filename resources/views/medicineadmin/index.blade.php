@@ -95,7 +95,10 @@
                         </div>
                     </td>
                     <td class="column-5">
-                        <a href="{{ url('medicines/'.$m->id.'/edit') }}" class="flex-c-m stext-101 cl0 size-111 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <a href="{{ url('medicines/'.$m->id) }}" class="flex-c-m stext-101 cl0 size-111 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+							Detail
+                        </a>
+                        <a href="{{ url('medicines/'.$m->id.'/edit') }}" class="flex-c-m stext-101 cl0 size-111 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer m-t-5">
 							Edit
                         </a>
                         <form method="POST" action="{{ url('medicines/'.$m->id) }}">

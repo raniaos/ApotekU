@@ -329,6 +329,7 @@
 		</div>
 	</div>
 
+	<input type="hidden" name="check_login" value="{{ auth()->user() ? 1 : 0 }}">
 	<div id="content-medicine">
 		@yield('content')
 	</div>
@@ -464,6 +465,11 @@
 		/*---------------------------------------------*/
 
 		$(document).on('click', '.js-addcart-detail', function(){
+			if ($('input[name="check_login"]').val() == 0) {
+				window.location.href = "{{ route('login')}}";
+				return;
+			}
+
 			var location = $(this).attr("location");
 
 			var medicineName = "";
@@ -480,40 +486,37 @@
 				qty = 1;
 			}
 
-			console.log(qty);
 			var token_name = $('input[name="_token"]').val();
-
-			if (token_name == undefined) {
-				window.location.href = "{{ route('login')}}";
-			} else {
-				$.ajax({
-					type: 'POST',
-					url: '{{ route("medicines.addToCart") }}',
-					data: { "_token": token_name, 'id':id, 'qty':qty},
-					success: function(data){
-						if (data.status == 'ok'){
-							swal(medicineName, "is added to cart !", "success");
-							var total = data.totalCart;
-							var name = data.name;
-							var price = data.price;
-							var photo = data.photo;
-							$("div.js-show-cart").attr('data-notify', total);
-							var tot = parseInt($('#totalCartBar').attr('total'));
-							totalPrice = tot + qty * price;
-							$('#totalCartBar').attr('total', totalPrice);
-							$('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");
-							var carttt = data.cart;
-							$('#ulCartBar').html("");
-							$.each(carttt, function(id, isiArray) {
-								var p = isiArray['photo'];
-								var text = `<li class="header-cart-item flex-w flex-t p-b-6 p-t-6 bor20"><div class="header-cart-item-img">
-								<img src="{{asset('assets/images/medicines/`+ p +`')}}" alt="IMG"></div><div class="header-cart-item-txt p-t-8"><a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">`+isiArray['name']+`</a><span class="header-cart-item-info">`+isiArray['quantity']+` x Rp`+ isiArray['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+`,-</span></div></li>`;
-								$("#ulCartBar").append(text);
-							});
-						} 
-					}
-				});
-			}
+			console.log(token_name);
+			
+			$.ajax({
+				type: 'POST',
+				url: '{{ route("medicines.addToCart") }}',
+				data: { "_token": token_name, 'id':id, 'qty':qty},
+				success: function(data){
+					if (data.status == 'ok'){
+						swal(medicineName, "is added to cart !", "success");
+						var total = data.totalCart;
+						var name = data.name;
+						var price = data.price;
+						var photo = data.photo;
+						$("div.js-show-cart").attr('data-notify', total);
+						var tot = parseInt($('#totalCartBar').attr('total'));
+						totalPrice = tot + qty * price;
+						$('#totalCartBar').attr('total', totalPrice);
+						$('#totalCartBar').html('Total: Rp'+totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+",-");
+						var carttt = data.cart;
+						$('#ulCartBar').html("");
+						$.each(carttt, function(id, isiArray) {
+							var p = isiArray['photo'];
+							var text = `<li class="header-cart-item flex-w flex-t p-b-6 p-t-6 bor20"><div class="header-cart-item-img">
+							<img src="{{asset('assets/images/medicines/`+ p +`')}}" alt="IMG"></div><div class="header-cart-item-txt p-t-8"><a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">`+isiArray['name']+`</a><span class="header-cart-item-info">`+isiArray['quantity']+` x Rp`+ isiArray['price'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")+`,-</span></div></li>`;
+							$("#ulCartBar").append(text);
+						});
+					} 
+				}
+			});
+			
 		});
 
 		// $('.js-addcart-detail').each(function(){

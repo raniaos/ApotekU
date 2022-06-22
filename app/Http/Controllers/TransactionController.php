@@ -149,6 +149,7 @@ class TransactionController extends Controller
     }
 
     public function bestPurchasing(){
+        $this->authorize('only-admin');
         $bestPurchasing = DB::table('transactions as t')
             ->join('users as u', 'u.id', '=', 't.user_id')
             ->select('t.user_id as id', DB::raw('sum(total) as purchase'),DB::raw('count(t.id) as totalTransaction'))

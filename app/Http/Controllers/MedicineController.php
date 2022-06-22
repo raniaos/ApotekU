@@ -40,6 +40,7 @@ class MedicineController extends Controller
      */
     public function create()
     {
+        $this->authorize('only-admin');
         $categories = Category::all();
         return view("medicineadmin.create", compact('categories'));
     }
@@ -52,6 +53,7 @@ class MedicineController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('only-admin');
         $data = new Medicine();
         $data->generic_name = $request->get('generic_name');
         $data->form = $request->get('form');
@@ -102,6 +104,7 @@ class MedicineController extends Controller
      */
     public function edit(Medicine $medicine)
     {
+        $this->authorize('only-admin');
         $med = $medicine;
         $categories = Category::all();
         return view('medicineadmin.edit', compact('med', 'categories'));
@@ -116,6 +119,7 @@ class MedicineController extends Controller
      */
     public function update(Request $request, Medicine $medicine)
     {
+        $this->authorize('only-admin');
         $medicine->generic_name = $request->get('generic_name');
         $medicine->form = $request->get('form');
         $medicine->restriction_formula = $request->get('restriction_formula');
@@ -148,6 +152,7 @@ class MedicineController extends Controller
      */
     public function destroy(Medicine $medicine)
     {
+        $this->authorize('only-admin');
         try {
             $medicine->delete();
 
@@ -157,14 +162,6 @@ class MedicineController extends Controller
 
             return redirect()->route('medicines.index')->with('error', $msg);
         }
-    }
-
-    public function ObatTerlaris() 
-    {
-        //select m.*, sum(quantity) as qty from medicine_transaction mt inner join medicines m on mt.medicine_id = m.id group by medicine_id order by qty desc
-        $data = DB::table('medicines as m')->join('medicine_transaction as mt', 'm.id', '=', 'mt.medicine_id')->select('mt.medicine_id', DB::raw('sum(quantity) as qty'))->orderBy('qty', 'DESC')->groupBy('mt.medicine_id')->get();
-
-        dd($data);
     }
 
     public function getMedicineByCategory($id, $name) {
@@ -210,6 +207,7 @@ class MedicineController extends Controller
 
     public function addToCart(Request $request)
     {
+        $this->authorize('only-customer');
         $id = $request->get('id');
         $qty = $request->get('qty');
         $p=Medicine::find($id);
@@ -241,6 +239,7 @@ class MedicineController extends Controller
     }
 
     public function updateCart(Request $request) {
+        $this->authorize('only-customer');
         $cart=session()->get('cart');
         $i = 0;
         $temp = array();
@@ -263,24 +262,9 @@ class MedicineController extends Controller
         session()->put('totalCart', count($temp));
         return redirect()->back();
     }
-    
-
-    public function cekcart(){
-        $cart=session()->get('cart');
-        $jum = count($cart);
-        // dd($jum);
-        // $cart = session('totalCart');
-        dd($cart);
-        $totalPrice = 0;
-        foreach($cart as $id) {
-            // dd($id['price']);
-            $totalPrice += $id['price'] * $id['quantity'];
-        }
-        dd($totalPrice);
-        dd($cart);
-    }
 
     public function bestSelling(){
+        $this->authorize('only-admin');
         $bestSelling = DB::table('medicines as m')
             ->join('medicine_transaction as mt', 'm.id', '=', 'mt.medicine_id')
             ->select('mt.medicine_id as id', DB::raw('sum(quantity) as qty'))
@@ -296,16 +280,11 @@ class MedicineController extends Controller
                     ->find($id);
                 $result[$i] = array('quantity' => $bestSelling[$i]->qty, 'medicines' => $medicine);
             }
-            // foreach ($bestSelling as $m) {
-            //     $id = $m->id;
-            //     $medicine = DB::table('medicines')
-            //         ->find($id);
-            //     // array_push($medicines,$medicine);
-            // }
         return view("report.bestselling", compact('result'));
     }
 
     public function cart() {
+        $this->authorize('only-customer');
         $user = Auth::user()->id;
         $address = Address::where('user_id', $user)->get();
         return view("cart.index", compact('address'));

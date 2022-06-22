@@ -130,6 +130,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('only-admin');
         try {
             $user->delete();
 
@@ -154,10 +155,5 @@ class UserController extends Controller
         Auth::attempt(['email' => $username, 'password' => $password]);
 
         return redirect()->route('/');
-    }
-
-    public function a()
-    {
-        dd(User::all());
     }
 }

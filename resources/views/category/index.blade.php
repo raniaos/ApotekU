@@ -54,7 +54,7 @@
                 @foreach($category as $c)
                 <tr class="table_row">
                     <td class="column-1">{{ $c->name }}</td>
-                    <td class="column-2 p-t-20">{{ $c->description }}.</td>
+                    <td class="column-2 p-t-20">{{ $c->description }}</td>
                     <td class="column-5">
                         <a href="{{ url('categories/'.$c->id.'/edit') }}">
                             <button style="width:120px; margin:auto;" class="flex-c-m stext-101 cl0 size-111 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">

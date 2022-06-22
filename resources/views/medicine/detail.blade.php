@@ -64,31 +64,28 @@
                     <div class="p-t-33">
 
                         <div class="flex-w flex-r-m p-b-10">
-                            <div class="size-204 flex-w flex-m respon6-next">
-                                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
-                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                        <i class="fs-16 zmdi zmdi-minus"></i>
+                            @auth
+                                @can('only-customer')
+                                    <div class="size-204 flex-w flex-m respon6-next">
+                                        <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
+        
+                                            <input class="mtext-104 cl3 txt-center num-product qtyMedicine" type="number" name="num-product" value="1" id="qtyMedicine">
+        
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
+                                        </div>
+        
+                                        <input type="hidden" name="idmedicine" value="{{ $res->id }}" class="idmedicine">
+                                        <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" location="detail">
+                                            Add to cart
+                                        </button>
                                     </div>
-
-                                    <input class="mtext-104 cl3 txt-center num-product qtyMedicine" type="number" name="num-product" value="1" id="qtyMedicine">
-
-                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                        <i class="fs-16 zmdi zmdi-plus"></i>
-                                    </div>
-                                </div>
-
-                                <input type="hidden" name="idmedicine" value="{{ $res->id }}" class="idmedicine">
-
-                                @auth
-                                    <button type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail" location="detail">
-                                        Add to cart
-                                    </button>
-                                @else
-                                    <a href="{{ route('login') }}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04" location="detail">
-                                        Add to cart
-                                    </a>
-                                @endauth
-                            </div>
+                                @endcan
+                            @endauth
                         </div>	
                     </div>
             </div>
@@ -184,32 +181,18 @@
                     <div class="product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{asset('assets/images/medicines/'.$m->photo)}}">
                             <ul class="product__hover">
-                            <li class="js-addcart-detail" location="list" generic="{{ $m->generic_name }}" id="{{ $m->id }}"><a><img src="{{ asset('assets/images/icon/cart.png') }}" alt=""><span>Add to Cart</span></a></li>
+                                @auth
+                                    @can('only-customer')
+                                        <li class="js-addcart-detail" location="list" generic="{{ $m->generic_name }}" id="{{ $m->id }}"><a><img src="{{ asset('assets/images/icon/cart.png') }}" alt=""><span>Add to Cart</span></a></li> 
+                                    @endcan
+                                @endauth
                                 <li><a href="#modalDetail" onclick="getDetailMedicine({{ $m->id }})" class="trans-04 js-show-modal1"><img src="{{asset('assets/images/icon/search.png')}}" alt=""><span>Information</span></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
                             <h6>{{ $m->generic_name }} {{ $m->form }}</h6>
                             <a href="{{ url('medicines/'.$m->id) }}" class="add-cart">{{ $m->generic_name }} {{ $m->form }}</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
                             <h5>Rp{{ number_format($m->price,0,',','.') }},-</h5>
-                            <div class="product__color__select">
-                                <label for="pc-4">
-                                    <input type="radio" id="pc-4">
-                                </label>
-                                <label class="active black" for="pc-5">
-                                    <input type="radio" id="pc-5">
-                                </label>
-                                <label class="grey" for="pc-6">
-                                    <input type="radio" id="pc-6">
-                                </label>
-                            </div>
                         </div>
                     </div>
                 </div>
